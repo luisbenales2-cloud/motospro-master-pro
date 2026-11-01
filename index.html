@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MotosPro Master PRO — Consultor Digital del Mecánico</title>
+<style>
+  :root{
+    --bg:#f3efe6; --card:#fffdf7; --ink:#211a12; --soft:#6e6252;
+    --gold:#e8a90c; --gold2:#9a6d00; --deep:#171310; --deep2:#2b2118;
+    --line:#e6dcc4; --green:#1f8a5b; --red:#d63d1e;
+    --cta1:#ff8a00; --cta2:#ff5e00;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  .wrap{max-width:640px;margin:0 auto;padding:0 16px 56px}
+  header{margin:0 -16px;padding:30px 22px 24px;color:#fdf6e3;
+    background:linear-gradient(155deg,#0f0c08 0%,#2b1f10 55%,#6b4a10 135%)}
+  .badge{display:inline-block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+    border:1px solid rgba(255,209,102,.9);border-radius:99px;padding:5px 10px;color:#ffd166;
+    background:rgba(255,209,102,.12)}
+  h1{font-family:Georgia,"Times New Roman",serif;font-weight:400;font-size:32px;line-height:1.12;margin:14px 0 6px}
+  h1 b{color:#ffd166;font-weight:400}
+  .sub{margin:0;font-size:15px;line-height:1.55;color:#f0dfb8;max-width:38ch}
+  .stats{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap}
+  .stat{background:rgba(255,248,230,.13);border:1px solid rgba(255,240,200,.35);
+    border-radius:12px;padding:8px 12px;font-size:13px}
+  .stat b{color:#ffd166}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:18px;
+    padding:18px;margin-top:16px;box-shadow:0 2px 10px rgba(80,55,20,.07)}
+  .card h2{font-family:Georgia,serif;font-weight:400;font-size:21px;margin:0 0 4px;color:var(--deep)}
+  .hint{color:var(--soft);font-size:13.5px;line-height:1.55;margin:0 0 12px}
+  label{display:block;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--soft);margin:0 0 6px}
+  input[type=text],input[type=password],input[type=number],select{width:100%;border:1.5px solid var(--line);
+    border-radius:12px;padding:12px;font-size:16px;font-family:inherit;background:#fff;color:var(--ink)}
+  input:focus{outline:none;border-color:var(--gold)}
+  .btn{display:inline-block;border:0;border-radius:99px;padding:13px 22px;font-size:16px;cursor:pointer;font-family:inherit;text-decoration:none;text-align:center}
+  .btn-cta{background:linear-gradient(180deg,var(--cta1),var(--cta2));color:#fff;font-weight:700;
+    box-shadow:0 6px 18px rgba(255,94,0,.42)}
+  .btn-gold{background:linear-gradient(180deg,#d4af4e,#b28a26);color:#241804;font-weight:700}
+  .btn-ghost{background:transparent;border:1.5px solid var(--line);color:var(--ink)}
+  .btn-row{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap;align-items:center}
+  .btn-whats{background:#22a35c;color:#fff;font-weight:700;box-shadow:0 6px 18px rgba(34,163,92,.35)}
+  /* buscador fijo */
+  .searchbar{position:sticky;top:0;z-index:20;margin:16px -16px 0;padding:12px 16px;
+    background:rgba(23,19,16,.96);border-bottom:1px solid #4a3a20}
+  .searchbar .row{display:flex;gap:8px;max-width:640px;margin:0 auto}
+  .searchbar input{flex:1;border-color:#5a4a28;background:#241d14;color:#fdf6e3}
+  .searchbar input::placeholder{color:#b7a67f}
+  .micbtn{flex:0 0 auto;border:1.5px solid #5a4a28;background:#241d14;color:#ffd166;border-radius:12px;
+    padding:0 14px;font-size:19px;cursor:pointer}
+  .micbtn.listening{background:#ffe1d6 !important;border-color:var(--red) !important;color:#8a1f0d !important}
+  .results{max-width:640px;margin:10px auto 0;display:none}
+  .results.show{display:block}
+  .res-item{background:#fffdf7;border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-top:8px;cursor:pointer}
+  .res-item b{font-size:15px}
+  .res-item p{margin:4px 0 0;font-size:13.5px;color:var(--soft);line-height:1.5}
+  .tag{display:inline-block;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;border-radius:99px;
+    padding:3px 8px;margin-left:6px;vertical-align:middle}
+  .tag-free{background:#e2f3e8;color:#1f6b46}
+  .tag-pro{background:#3d2a1a;color:#ffd97a}
+  .tag-lock{background:#fde8e0;color:#8a1f0d}
+  /* módulos */
+  .sys{margin-top:26px}
+  .sys h3{font-family:Georgia,serif;font-weight:400;font-size:19px;margin:0 0 10px;color:var(--deep);
+    border-bottom:2px solid var(--gold);padding-bottom:6px}
+  .guide{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:15px 16px;margin-top:10px}
+  .guide.pro{border:1.5px solid #c9a227;background:linear-gradient(180deg,#fffdf7,#fbf3df)}
+  .guide h4{margin:0 0 6px;font-size:16.5px;line-height:1.35}
+  .guide .body{font-size:14.5px;line-height:1.65;color:#3a3128}
+  .guide .body ul{margin:6px 0;padding-left:18px}
+  .guide .body li{margin:4px 0}
+  .guide .warn{margin-top:8px;font-size:13px;color:#8a5a00;background:#fdf3d7;border-radius:8px;padding:8px 10px}
+  .locked{opacity:.92}
+  .locked .body{display:none}
+  .locknote{margin-top:8px;font-size:13.5px;color:var(--soft)}
+  /* calculadoras */
+  .calc-out{margin-top:12px;border-radius:12px;padding:13px 14px;font-size:15px;line-height:1.6;display:none}
+  .calc-out.show{display:block}
+  .calc-out.ok{background:#e2f3e8;color:#14532d}
+  .calc-out.warn2{background:#fdf3d7;color:#7a4a00}
+  .calc-out.bad{background:#fde8e0;color:#8a1f0d}
+  table{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:10px}
+  th,td{border:1px solid var(--line);padding:7px 8px;text-align:left}
+  th{background:#f6ecd2}
+  /* PRO y compra */
+  .pro-hero{background:linear-gradient(160deg,#191238,#3b2370 60%,#5a3410);color:#f7ead0;
+    border:2px solid #ffd166;box-shadow:0 8px 26px rgba(59,35,112,.35)}
+  .pro-hero h2{color:#ffd97a}
+  .pro-hero ul{margin:10px 0;padding-left:20px;line-height:1.9;font-size:15px}
+  .price{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+  .price div{flex:1;min-width:140px;background:rgba(255,248,230,.1);
+    border:1px solid rgba(255,217,122,.4);border-radius:14px;padding:12px;text-align:center}
+  .price b{display:block;font-size:24px;color:#ffe9b0}
+  .price span{font-size:12px;color:#e8d5ac}
+  .pro-hero .hint{color:#e8d5ac}
+  .methods{margin:12px 0 0;padding:0;list-style:none;font-size:14.5px;line-height:2}
+  .unlock-ok{background:#e2f3e8;color:#14532d;border-radius:12px;padding:12px 14px;font-size:15px;display:none;margin-top:12px}
+  .unlock-ok.show{display:block}
+  footer{margin-top:26px;font-size:12.5px;color:var(--soft);line-height:1.6;text-align:center}
+  .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+  .chips button{border:1.5px solid var(--line);background:#fff;color:var(--ink);border-radius:99px;
+    padding:8px 13px;font-size:13.5px;cursor:pointer;font-family:inherit}
+  .chips button.on{border-color:var(--cta1);background:#ffe9d6;font-weight:700}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <span class="badge">Consultor digital · Enigma Producciones Digitales</span>
+    <h1>MotosPro <b>Master PRO</b></h1>
+    <p class="sub">La enciclopedia clínica del mecánico: busca cualquier falla, mide con las calculadoras y sigue el procedimiento paso a paso.</p>
+    <div class="stats">
+      <span class="stat">📚 <b id="statGuides">—</b> guías clínicas</span>
+      <span class="stat">🧮 <b>2</b> calculadoras</span>
+      <span class="stat">✦ <b id="proState">Gratis</b></span>
+    </div>
+  </header>
+
+  <!-- Aviso PRO: un solo pago, todo abierto -->
+  <section class="card pro-hero" id="proHero">
+    <h2 id="proHeroTitle">✦ Un solo pago de $9.99 desbloquea TODO lo PRO</h2>
+    <p class="hint" id="proHeroText">Sin pagos por módulo. Paga una sola vez y se abren todos los módulos PRO, todas las guías profundas y todos los procedimientos. Lo gratis sigue siendo gratis, para siempre.</p>
+    <div id="proHeroBody">
+      <ul>
+        <li>Todos los módulos PRO desbloqueados de una vez.</li>
+        <li>Procedimientos profundos, medidas y metrología.</li>
+        <li>Buscador completo sin restricciones.</li>
+      </ul>
+      <div class="btn-row">
+        <a class="btn btn-whats" id="waTop" href="#" target="_blank" rel="noopener">📲 Activar PRO por WhatsApp — $9.99</a>
+        <button class="btn btn-gold" id="gotoUnlock">Ya pagué, tengo mi palabra</button>
+      </div>
+      <p class="hint" style="margin-top:10px">Coordinas el pago por WhatsApp: Pago Móvil, Binance Pay, tarjeta, Airtm, Zinli o Bybit. Al confirmar, recibes tu palabra de acceso.</p>
+    </div>
+    <div class="unlock-ok" id="proActiveNote">✅ PRO ACTIVO. Todos los módulos están abiertos en esta página. Si cierras y vuelves, tu acceso sigue guardado en este teléfono.</div>
+  </section>
+
+  <!-- Buscador -->
+  <div class="searchbar">
+    <div class="row">
+      <input type="text" id="searchInput" placeholder="Busca: carburador, frenos, CDI, cadena, bujía…" autocomplete="off">
+      <button class="micbtn" id="micBtn" title="Buscar por voz">🎙️</button>
+    </div>
+    <div class="results" id="results"></div>
+  </div>
+
+  <!-- Filtros -->
+  <div class="chips" id="sysChips"></div>
+
+  <!-- Calculadoras -->
+  <section class="card" id="calcSection">
+    <h2>🧮 Calculadoras técnicas</h2>
+    <p class="hint">Mide con tu multímetro y deja que la calculadora te diga dónde está el problema y qué comprobar después.</p>
+
+    <label for="voltInput">1 · Sistema de carga y batería — voltaje a 3000 RPM (bornes)</label>
+    <input type="number" id="voltInput" step="0.1" min="0" max="20" placeholder="Ejemplo: 13.8">
+    <div class="btn-row">
+      <button class="btn btn-cta" id="voltBtn">Diagnosticar carga</button>
+    </div>
+    <div class="calc-out" id="voltOut"></div>
+    <table>
+      <tr><th>Voltaje a 3000 RPM</th><th>Lectura</th></tr>
+      <tr><td>Menos de 12.4 V</td><td>Batería baja o sistema sin cargar</td></tr>
+      <tr><td>12.4 – 12.8 V (motor apagado)</td><td>Batería cargada en reposo</td></tr>
+      <tr><td>13.5 – 14.8 V (a 3000 RPM)</td><td>Carga óptima</td></tr>
+      <tr><td>Más de 15.0 V</td><td>Sobrecarga: regulador sospechoso</td></tr>
+    </table>
+    <p class="hint" style="margin-top:8px">Valores de referencia para sistemas de 12 V. Si tu modelo indica otros valores en su manual, manda el manual.</p>
+
+    <label for="ohmPrim" style="margin-top:20px">2 · Bobinas — compara tu medición con la referencia</label>
+    <input type="number" id="ohmPrim" step="0.1" min="0" placeholder="Bobina primaria (ohmios) — ej: 1.2">
+    <input type="number" id="ohmSec" step="0.1" min="0" placeholder="Bobina secundaria (kΩ) — ej: 8.5" style="margin-top:8px">
+    <input type="number" id="ohmPick" step="1" min="0" placeholder="Bobina captora / pickup (ohmios) — ej: 220" style="margin-top:8px">
+    <div class="btn-row">
+      <button class="btn btn-cta" id="ohmBtn">Evaluar bobinas</button>
+    </div>
+    <div class="calc-out" id="ohmOut"></div>
+    <p class="hint" style="margin-top:8px">Referencias típicas (varían por modelo, confirma en tu manual): primaria 0.2 – 5 Ω · secundaria 5 – 20 kΩ · captora 100 – 500 Ω. Una lectura de 0 o de infinito (OL) indica bobina en corto o abierta.</p>
+  </section>
+
+  <!-- Guías -->
+  <div id="guides"></div>
+
+  <!-- Compra / desbloqueo -->
+  <section class="card pro-hero" id="buySection">
+    <h2>🚀 Activa todo PRO por $9.99</h2>
+    <p class="hint">Un solo pago. Todos los módulos PRO. Para siempre en este teléfono.</p>
+    <ul class="methods">
+      <li>🇻🇪 Pago Móvil (Bs)</li>
+      <li>🟡 Binance Pay (USDT)</li>
+      <li>💳 Tarjeta de crédito / débito</li>
+      <li>🌐 Airtm · Zinli · Bybit</li>
+    </ul>
+    <p class="hint">Todos los métodos se coordinan por WhatsApp. Envías tu comprobante y recibes tu palabra de acceso.</p>
+    <div class="btn-row">
+      <a class="btn btn-whats" id="waBottom" href="#" target="_blank" rel="noopener">📲 Quiero activar PRO — $9.99</a>
+    </div>
+    <div style="margin-top:18px;border-top:1px solid rgba(255,217,122,.35);padding-top:14px">
+      <label for="keyInput" style="color:#e8d5ac">¿Ya pagaste? Introduce tu palabra de acceso</label>
+      <input type="password" id="keyInput" placeholder="Tu palabra de acceso" autocomplete="off">
+      <div class="btn-row">
+        <button class="btn btn-gold" id="unlockBtn">Desbloquear PRO</button>
+      </div>
+      <p class="hint" id="keyMsg" style="margin-top:8px"></p>
+    </div>
+  </section>
+
+  <footer>
+    MotosPro Master PRO © 2026 — Enigma Producciones Digitales. Todos los derechos reservados.<br>
+    Los valores indicados son de referencia general. Cada modelo tiene sus especificaciones: ante la duda, manda el manual de taller de tu moto. Trabaja siempre con el motor frío cuando el procedimiento lo exige y desconecta la batería antes de tocar el sistema eléctrico.
+  </footer>
+</div>
+
+<script>
+"use strict";
+var GUIDES = [
+{id:"carburador",s:"Alimentación",t:"Carburador: desarme, limpieza y calibración",p:0,k:"carburador chicler chiclet flotador mezcla cuba aguja ralentí",
+b:"<ul><li><b>Desarme y limpieza:</b> retira la cuba inferior, el flotador, el pasador y la aguja de punzón. Extrae el chicler de alta y el de baja y limpia los ductos internos con solvente y aire a presión.</li><li><b>Flotador:</b> distancia de la lengüeta a la base entre 13.0 y 15.0 mm.</li><li><b>Mezcla piloto:</b> enrosca el tornillo a tope sin forzar y abre entre 1.5 y 2.5 vueltas.</li><li><b>Filtros:</b> filtro de aire cada 2,500 km y filtro de gasolina de línea. Revisa la llave de vacío del tanque.</li></ul><div class='warn'>Trabaja con el motor frío, sin fumar y lejos de chispas. La gasolina es inflamable.</div>"},
+{id:"carburador-sintomas",s:"Alimentación",t:"Carburador: síntomas y qué tocar primero",p:0,k:"ahoga ahogamiento cuesta encender frío gotea gasolina ralenti inestable se apaga",
+b:"<ul><li><b>Se ahoga o huele a gasolina:</b> punzón o flotador con problema, nivel alto en la cuba. Revisa aguja y asiento.</li><li><b>Cuesta encender en frío:</b> revisa el ahogador (cebador) y el circuito de baja tapado.</li><li><b>Ralentí sube y baja:</b> entrada de aire falsa en la tobera o chicler de baja sucio.</li><li><b>Gotea gasolina:</b> cuba, mangueras o llave de paso. No ruedes así: riesgo de incendio.</li></ul>"},
+{id:"bujia-color",s:"Encendido",t:"Bujía: diagnóstico por color del electrodo",p:0,k:"bujía bujia color electrodo café negro blanco pipa cable alta",
+b:"<ul><li><b>Café / avellana:</b> combustión perfecta.</li><li><b>Negro seco:</b> exceso de gasolina, ahogamiento o filtro sucio.</li><li><b>Negro húmedo / grasoso:</b> pase de aceite por anillos o sellos de válvulas.</li><li><b>Blanco / gris:</b> mezcla pobre, exceso de aire.</li><li><b>Calibración:</b> electrodo con galgas entre 0.6 y 0.8 mm. Pipa antiparásita cerca de 5 kΩ y cable de alta en buen estado.</li></ul>"},
+{id:"bujia-sin-chispa",s:"Encendido",t:"No hay chispa: orden de revisión",p:0,k:"sin chispa no enciende no arranca chispa débil bobina cdi captora",
+b:"<ul><li>1. Bujía: cambia por una nueva y prueba. 2. Pipa y cable: busca cortes, óxido o resistencia fuera de rango.</li><li>3. Bobina de alta: mide con el multímetro y compara con el manual. 4. Captora y CDI: revisa alimentación y tierra.</li><li>5. Interruptores: switch de encendido, botón de pare, sensor de pata y fusible principal.</li><li>Si hay chispa débil o intermitente, sospecha de bobina, cable o masa deficiente antes de cambiar el CDI.</li></ul>"},
+{id:"neumaticos",s:"Mantenimiento",t:"Neumáticos: presión, nomenclatura y rines",p:0,k:"neumáticos neumaticos cauchos presión psi rin llanta aire",
+b:"<ul><li><b>Presión estándar:</b> delantero 28-30 PSI, trasero 32-36 PSI, siempre en frío.</li><li><b>Nomenclatura (90/90-18):</b> 90 mm de ancho, 90% de perfil y rin de 18 pulgadas.</li><li><b>Revisión rápida:</b> dibujo, cortes, objetos clavados y válvulas. Una presión baja gasta más gasolina y calienta el caucho.</li></ul>"},
+{id:"neumaticos-desgaste",s:"Mantenimiento",t:"Neumáticos: desgaste, fecha y cuándo cambiar",p:0,k:"desgaste caucho vencido dot fecha cambio liso",
+b:"<ul><li><b>Desgaste al centro:</b> exceso de presión. <b>Desgaste en los bordes:</b> presión baja.</li><li><b>Fecha DOT:</b> cuatro números en el flanco (semana y año). Un caucho viejo se endurece aunque tenga dibujo.</li><li><b>Cambia si:</b> ves la lona, hay deformación, grietas profundas o el dibujo llegó al testigo de desgaste.</li></ul>"},
+{id:"consumo-parasito",s:"Eléctrico",t:"Consumo parásito / robo de corriente con multímetro",p:0,k:"consumo parásito robo corriente descarga batería multímetro fusible",
+b:"<ul><li>Desconecta el borne negativo y conecta el multímetro <b>en serie</b> entre el borne y el cable suelto, en escala de 10A DC, con la llave <b>cerrada</b> (moto apagada, sin contacto).</li><li>Una lectura pequeña puede ser normal si hay reloj o alarma. Una lectura claramente alta indica fuga.</li><li>Para ubicarla, ve retirando los fusibles uno a uno: cuando la lectura cae, ese circuito es el del problema. Revisa alarma, GPS, luces y accesorios de ese ramal.</li></ul><div class='warn'>Nunca midas en serie con el motor en marcha ni enciendas luces con el multímetro en modo amperios: puedes quemar el fusible del equipo.</div>"},
+{id:"multimetro-uso",s:"Herramientas",t:"Multímetro: cómo medir sin equivocarte",p:0,k:"multímetro multimetro medir voltaje continuidad resistencia como usar",
+b:"<ul><li><b>Voltaje DC (V⎓):</b> puntas en paralelo al circuito, moto encendida o apagada según la prueba.</li><li><b>Continuidad (buzzer):</b> circuito sin energía. Suena si el cable está bueno.</li><li><b>Resistencia (Ω):</b> componente desconectado. Una lectura OL significa circuito abierto.</li><li>Empieza siempre en la escala más alta y baja con cuidado. Puntas firmes y manos secas.</li></ul>"},
+{id:"aceites",s:"Mantenimiento",t:"Aceites: selección y lavado seguro",p:0,k:"aceite 20w50 10w40 mineral sintético lavado motor",
+b:"<ul><li><b>20W50 mineral/semisintético:</b> motores de trabajo. <b>10W40 sintético:</b> alta cilindrada. Respeta siempre el manual de tu modelo.</li><li>Revisa el nivel con la moto derecha y en frío, y cambia según el intervalo del fabricante.</li><li><b>Lavado seguro:</b> protege CDI, bobinas, capuchones y comandos antes de usar agua a presión. Nunca apuntes directo a conectores ni a la admisión.</li></ul>"},
+{id:"frenos-pastillas",s:"Frenos",t:"Frenos de disco: pastillas y síntomas",p:0,k:"frenos pastillas disco chillido frena poco",
+b:"<ul><li><b>Chillido metálico:</b> pastillas al límite. <b>Frena poco o vibra:</b> pastillas cristalizadas, disco sucio o alabeado.</li><li>Revisa el espesor de la pastilla y el estado del disco. Cambia siempre el par completo.</li><li>No aprietes la maneta con las pastillas fuera: el pistón sale y cuesta volver a entrar.</li></ul>"},
+{id:"frenos-liquido",s:"Frenos",t:"Líquido de frenos y purga básica",p:0,k:"líquido frenos purga maneta esponjosa dot aire",
+b:"<ul><li><b>Maneta esponjosa:</b> casi siempre es aire en el circuito. Purga desde el caliper hasta que salga líquido limpio sin burbujas.</li><li>Revisa el nivel y el color: líquido oscuro o con más de dos años conviene cambiarlo. Usa el DOT que indica la tapa del depósito.</li><li>El líquido de frenos daña la pintura: limpia de inmediato cualquier derrame.</li></ul>"},
+{id:"frenos-tambor",s:"Frenos",t:"Freno de tambor: zapatas y ajuste",p:0,k:"tambor zapatas freno trasero ajuste chirrido",
+b:"<ul><li><b>Pedal largo o frena poco:</b> zapatas gastadas o mal ajustadas. Ajusta el cable/varilla hasta sentir resistencia leve y verifica que la rueda gire libre.</li><li><b>Chirrido:</b> zapatas cristalizadas o tambor sucio. Limpia con aire y revisa el espesor.</li><li>Si el tambor tiene surcos profundos o la leva llega al tope, toca rectificar o cambiar.</li></ul>"},
+{id:"cadena",s:"Transmisión",t:"Cadena: tensión, limpieza y lubricación",p:0,k:"cadena tensión holgura lubricar transmisión piñón corona",
+b:"<ul><li><b>Holgura:</b> en la mayoría de las motos anda entre 20 y 30 mm medidos en el punto medio. Confirma el valor exacto en tu manual.</li><li>Limpia con cepillo y desengrasante suave, seca y lubrica por dentro de la cadena. Lubrica cada 500 km o después de lluvia.</li><li>Ajusta con la rueda trasera alineada: las marcas de ambos lados deben quedar iguales.</li></ul>"},
+{id:"cadena-desgaste",s:"Transmisión",t:"Cadena y kit de arrastre: desgaste y cambio",p:0,k:"cadena estirada kit arrastre piñón corona dientes",
+b:"<ul><li><b>Cadena estirada:</b> si al tirar de la cadena en la corona se ve media altura del diente, el kit está listo.</li><li><b>Dientes afilados o en forma de ola:</b> cambia piñón, corona y cadena juntos. Cambiar solo una pieza gasta la nueva.</li><li>Un ruido de golpeteo al acelerar o al soltar suele ser cadena floja o kit gastado.</li></ul>"},
+{id:"bateria-guia",s:"Eléctrico",t:"Batería: bornes, carga y vida útil",p:0,k:"batería bateria bornes sulfatada carga lenta no arranca",
+b:"<ul><li><b>Bornes sulfatados:</b> limpia con agua caliente y bicarbonato, seca y aplica grasa protectora. Aprieta bien.</li><li><b>Carga lenta:</b> usa cargador de bajo amperaje. Una carga rápida y fuerte acorta la vida de la batería.</li><li><b>Síntomas de batería muerta:</b> luces tenues, arranque pesado, clic del relé sin girar el motor. Mide el voltaje en reposo: cerca de 12.6-12.8 V es una batería sana y cargada.</li></ul>"},
+{id:"fusibles",s:"Eléctrico",t:"Fusibles: el quemado y el reemplazo correcto",p:0,k:"fusible quemado corto amperaje no enciende nada",
+b:"<ul><li>Si la moto quedó muerta de golpe (sin luces ni tablero), revisa el fusible principal.</li><li>Reemplaza siempre por el <b>mismo amperaje</b>. Un fusible de mayor valor no protege nada.</li><li>Si el nuevo se quema de inmediato, hay un corto: no lo puentees con alambre. Busca el cable pelado o el componente en corto.</li></ul>"},
+{id:"luces-basicas",s:"Eléctrico",t:"Luces básicas: bombillos, stop y direccionales",p:0,k:"luces bombillo stop direccional flasher rápido no prende",
+b:"<ul><li><b>Stop siempre encendido:</b> interruptor de freno pegado o mal ajustado.</li><li><b>Direccional parpadea muy rápido:</b> un bombillo quemado o de potencia distinta.</li><li><b>Nada prende:</b> fusible, masa o switch. Revisa primero lo simple antes de desarmar el ramal.</li></ul>"},
+{id:"ralenti",s:"Alimentación",t:"Ralentí inestable, alto o bajo",p:0,k:"ralentí ralenti inestable se apaga acelerada entrada aire",
+b:"<ul><li><b>Se apaga en frío:</b> circuito de baja sucio o ahogador defectuoso.</li><li><b>Acelerada sola:</b> guaya de acelerador atorada o entrada de aire falsa en la tobera.</li><li><b>Sube y baja:</b> mezcla mal ajustada o chispa irregular. Ajusta con el motor caliente y en el orden del manual.</li></ul>"},
+{id:"humo-color",s:"Motor",t:"Humo del escape: qué dice cada color",p:0,k:"humo blanco negro azul escape aceite gasolina",
+b:"<ul><li><b>Humo blanco espeso:</b> puede ser condensación en frío (normal si se quita rápido) o refrigerante en la combustión si persiste y huele dulce.</li><li><b>Humo negro:</b> exceso de gasolina: filtro sucio, carburador o inyección con mezcla rica.</li><li><b>Humo azul:</b> quema aceite: anillos, sellos de válvulas o guías gastadas.</li></ul>"},
+{id:"ruidos-motor",s:"Motor",t:"Ruidos del motor: qué indica cada uno",p:0,k:"ruido golpeteo cascabeleo chillido motor suena",
+b:"<ul><li><b>Golpeteo rítmico que sube con las RPM:</b> juego en biela o bancada. No lo dejes: puede romper el motor.</li><li><b>Cascabeleo al acelerar:</b> gasolina de bajo octanaje, avance adelantado o carbonilla.</li><li><b>Chillido agudo:</b> correa, rodamiento o roce de metal. Ubica el ruido con un destornillador largo apoyado en el oído, con cuidado.</li></ul>"},
+{id:"suspension-bastones",s:"Suspensión",t:"Suspensión: desarme de bastones delanteros",p:1,k:"suspensión bastones barras desarme retenes tijeras",
+b:"<ul><li>Afloja el tapón superior con la barra aún montada en las tijeras para no pelear con la presión del resorte.</li><li>Desmonta, vacía el aceite viejo y revisa guardapolvo, circlip y la llave Allen interna del fondo.</li><li>Arma limpio, con el aceite nuevo medido y sin rayar las botellas ni las barras.</li></ul>"},
+{id:"suspension-retenes",s:"Suspensión",t:"Retenes y aceite de suspensión",p:1,k:"retenes aceite suspensión fuga barras 10w 15w cantidad",
+b:"<ul><li><b>Fuga en las barras:</b> retén dañado o barra rayada. Limpia primero el guardapolvo: a veces es solo suciedad atrapada.</li><li><b>Cantidad por barra:</b> entre 140 ml y 165 ml según el modelo. Aceite hidráulico 10W o 15W según el manual.</li><li><b>Amortiguadores traseros:</b> revisa fugas, bujes y ajuste de precarga. Si rebota más de dos veces al empujar, está vencido.</li></ul>"},
+{id:"refrigeracion-agua",s:"Refrigeración",t:"Refrigeración por agua: circuito y termoswitch",p:1,k:"refrigeración agua radiador termoswitch temperatura recalienta",
+b:"<ul><li><b>Mezcla:</b> 50% agua desmineralizada y 50% etilenglicol. Nunca agua de chorro sola por mucho tiempo: corroe el circuito.</li><li><b>Purga de aire:</b> con el motor frío, llena, enciende sin tapa y deja salir las burbujas; completa el nivel.</li><li><b>Termoswitch:</b> debe activar el electroventilador entre 85 °C y 92 °C. Si no activa, prueba el switch, el relay y el fusible.</li></ul>"},
+{id:"refrigeracion-aire-aceite",s:"Refrigeración",t:"Refrigeración por aire y por aceite",p:1,k:"refrigeración aire aceite aletas radiador aceite recalienta",
+b:"<ul><li><b>Por aire:</b> las aletas del cilindro deben estar limpias y sin barro. El aire que no pasa no enfría: limpia con aire a presión y cepillo suave.</li><li><b>Por aceite:</b> revisa el radiador de aceite, sus mangueras y que el nivel de aceite esté correcto. Aceite bajo recalienta el motor.</li><li><b>Síntomas de recalentamiento:</b> pérdida de fuerza, olor a caliente, detonación. Detén la moto y deja enfriar antes de abrir cualquier tapa.</li></ul>"},
+{id:"egr",s:"Refrigeración",t:"Válvula EGR: limpieza y síntomas",p:1,k:"egr válvula gases recirculación humo ralentí",
+b:"<ul><li><b>Síntomas:</b> ralentí inestable, humo, pérdida de fuerza o luz de falla.</li><li><b>Limpieza:</b> desmonta con el motor frío, limpia el carbón con solvente adecuado y revisa que la válvula mueva libre, sin atascarse.</li><li>Si la válvula queda abierta, entra gas de escape de más y la moto falla en baja. Si queda cerrada, suben las emisiones y la temperatura.</li></ul>"},
+{id:"motor-tiempo",s:"Motor",t:"Cadena de tiempo y puesta a punto",p:1,k:"cadena tiempo puesta punto marca t árbol levas sincronización",
+b:"<ul><li><b>Marca T:</b> gira el motor hasta alinear la marca T del volante con la referencia de la carcasa, en el tiempo de compresión.</li><li>Las marcas del piñón del árbol de levas deben quedar completamente paralelas a la superficie de la culata.</li><li><b>Tensionador:</b> revisa su recorrido y que la cadena no tenga juego excesivo ni eslabones duros. Una cadena estirada suena y pierde el punto.</li></ul>"},
+{id:"motor-metrologia",s:"Motor",t:"Metrología: pistón, anillos y rectificación",p:1,k:"metrología pistón anillos luz puntas conicidad rectificación válvulas",
+b:"<ul><li><b>Anillos:</b> desfasados a 120° entre sí. Luz entre puntas de 0.15 mm a 0.30 mm según el manual.</li><li><b>Rectificación:</b> si la conicidad u ovalización del cilindro supera 0.05 mm, rectifica. Sobremedidas comunes: 0.25 y 0.50.</li><li><b>Válvulas:</b> admisión 0.05-0.08 mm y escape 0.08-0.12 mm. Mide en frío y con el pistón en el punto correcto.</li></ul>"},
+{id:"motor-compresion",s:"Motor",t:"Prueba de compresión paso a paso",p:1,k:"compresión prueba compresímetro baja fuerza anillos válvulas",
+b:"<ul><li>Motor caliente, bujía fuera, acelerador abierto a fondo y compresímetro bien sellado. Da arranque varias vueltas y anota la lectura.</li><li><b>Compresión baja:</b> repite con una cucharadita de aceite por el agujero de la bujía (prueba húmeda). Si sube, el problema son anillos/cilindro. Si no sube, sospecha válvulas.</li><li>Compara con el valor del manual de tu modelo: una lectura muy baja con humo azul confirma desgaste interno.</li></ul>"},{id:"ciguenal-biela",s:"Motor",t:"Cigüeñal y biela: síntomas y revisión",p:1,k:"cigüeñal biela juego rodamientos golpeteo rectificar",
+b:"<ul><li><b>Síntomas de juego:</b> golpeteo profundo que aumenta con la carga, vibración y limadura en el aceite.</li><li><b>Revisión:</b> con el motor abierto, verifica juego axial y radial de la biela y el estado de los rodamientos de bancada. Un juego visible a mano ya es demasiado.</li><li><b>Rectificación:</b> se hace en taller especializado con medidas del manual. Nunca armes con juego: rompe el resto del motor.</li></ul>"},
+{id:"electrico-cdi",s:"Eléctrico",t:"CDI: alimentación y pruebas básicas",p:1,k:"cdi encendido alimentación estator 12v chispa",
+b:"<ul><li><b>Alimentación:</b> hay CDI de corriente alterna (AC, alimentado desde el estator) y de corriente directa (DC, 12V de batería). Identifica el tuyo antes de medir: no se prueban igual.</li><li><b>Prueba básica:</b> verifica que lleguen alimentación y tierra al CDI, que la captora envíe señal y que salga pulso hacia la bobina.</li><li>Si todo llega y no hay chispa, con la bobina y la captora buenas, el CDI es el sospechoso. Prueba con uno conocido bueno antes de comprar.</li></ul>"},
+{id:"electrico-regulador",s:"Eléctrico",t:"Regulador / rectificador: síntomas y pruebas",p:1,k:"regulador rectificador sobrecarga batería hierve luces queman",
+b:"<ul><li><b>Síntomas:</b> batería que hierve o se infla, luces que se queman, voltaje por encima de 15 V a 3000 RPM (sobrecarga) o voltaje que no sube (sin carga).</li><li><b>Prueba:</b> mide el voltaje en bornes a 3000 RPM y revisa masa, conectores quemados o sulfatados y el cableado del estator.</li><li>Un regulador con olor a quemado o con el conector derretido se cambia: no se repara.</li></ul>"},
+{id:"electrico-chanchito",s:"Eléctrico",t:"Relé de arranque (chanchito) y arranque pesado",p:1,k:"chanchito relé arranque clic no gira automático",
+b:"<ul><li><b>Solo se escucha un clic:</b> batería baja, bornes flojos o relé dañado. Mide el voltaje al dar arranque: si cae mucho, la batería no aguanta.</li><li><b>Prueba del relé:</b> con cuidado, puentea por un instante los dos bornes gruesos del relé: si el motor gira, el relé es el problema.</li><li>Revisa también el botón de arranque, el switch de pare y los carbones del motor de arranque.</li></ul><div class='warn'>El puenteo es solo una prueba de un segundo, con la moto en neutro y lejos de gasolina. No lo dejes conectado.</div>"},
+{id:"electrico-ramal",s:"Eléctrico",t:"Ramal eléctrico y código de colores",p:1,k:"ramal cables colores código corto diagrama eléctrico origen",
+b:"<ul><li><b>Colores por origen (referencia general):</b> asiáticas/chinas, europeas y americanas usan códigos distintos para tierra, carga y encendido. Confirma el de tu marca en su diagrama.</li><li><b>Para seguir un cable:</b> desconecta la batería, usa continuidad y ve tramo por tramo. Marca con cinta cada conector que sueltes.</li><li><b>Cortos:</b> busca cables pelados rozando el chasis, conectores derretidos y cinta aislante vieja. Un corto repetido siempre tiene una causa física: encuéntrala.</li></ul>"},
+{id:"electrico-estator",s:"Eléctrico",t:"Estator / plato de bobinas: síntomas y pruebas",p:1,k:"estator plato bobinas no carga quemado resistencia",
+b:"<ul><li><b>Síntomas:</b> la moto no carga, la batería se descarga rodando o el encendido falla en caliente.</li><li><b>Prueba:</b> mide resistencia entre las fases y de cada fase a masa (no debe haber continuidad a masa). Compara con los valores del manual de tu modelo.</li><li>Bobinas oscuras, con olor a quemado o barniz derretido indican estator dañado. Revisa también el volante magnético y que no haya limadura pegada.</li></ul>"},
+{id:"luces-diagramas",s:"Eléctrico",t:"Luces: diagramas descritos cable por cable",p:1,k:"luces diagramas direccionales altas bajas stop flasher mandos",
+b:"<ul><li><b>Stop:</b> positivo permanente al interruptor de freno (maneta o pedal) y de ahí al bombillo de stop; la masa cierra el circuito.</li><li><b>Direccionales:</b> positivo al flasher, del flasher al mando y del mando a cada lado. Si un lado no prende, revisa su bombillo y su masa.</li><li><b>Altas/bajas:</b> el mando selecciona el filamento. Si solo funciona un filamento, el bombillo está quemado por ese lado.</li><li>Sin diagramas dibujados: sigue cada cable con el multímetro en continuidad y anota los colores de tu moto.</li></ul>"},
+{id:"mandos",s:"Eléctrico",t:"Mandos y switches: limpieza y cambio",p:1,k:"mandos switches botón arranque luz claxon contacto",
+b:"<ul><li><b>Botón que falla a veces:</b> casi siempre es suciedad u óxido en los contactos. Abre el mando, limpia con limpiador de contactos y revisa los resortes.</li><li><b>Cambio de mando:</b> anota los colores cable por cable antes de soltar nada. Un cable cruzado quema fusibles.</li><li>La maneta de embrague y freno deben moverse libres, sin juego excesivo ni atascamiento.</li></ul>"},
+{id:"alarmas-gps",s:"Eléctrico",t:"Alarmas y GPS: instalación segura",p:1,k:"alarma gps rastreador instalación cortacorriente consumo",
+b:"<ul><li><b>Alimentación:</b> toma +12V permanente con su fusible propio. El relé cortacorriente va al cable del CDI o de la bomba, según el sistema.</li><li><b>Consumo:</b> una alarma o GPS consume batería en reposo. Si la moto pasa días quieta, la batería se descarga: desconecta o usa mantenedor.</li><li>Esconde bien el módulo y los cables: una alarma visible se desactiva en segundos.</li></ul>"},
+{id:"scooter-cvt",s:"Scooter",t:"CVT: correa, variador y armado completo",p:1,k:"scooter cvt correa variador rodillos transmisión automática",
+b:"<ul><li><b>Desarme:</b> retira la tapa, afloja el variador con la herramienta adecuada y saca la correa sin forzarla ni doblarla al revés.</li><li><b>Correa:</b> cambia si tiene grietas, desgaste o brillo en los flancos. Revisa rodillos/masas: planos o con desgaste se cambian en juego completo.</li><li><b>Armado:</b> limpia las pistas, aplica grasa sintética de alta temperatura solo donde indica el manual, y aprieta con el torque correcto. Sin pasos de armado no hay trabajo terminado: verifica giro libre y tensión antes de cerrar.</li></ul>"},
+{id:"scooter-variador",s:"Scooter",t:"Variador y embrague centrífugo del scooter",p:1,k:"variador rodillos masas embrague centrífugo salida lenta vibra",
+b:"<ul><li><b>Salida lenta o vibración al arrancar:</b> rodillos planos, correa gastada o zapatas del embrague cristalizadas.</li><li><b>Rodillos:</b> se cambian en juego, todos del mismo peso. Mezclar pesos da aceleración irregular.</li><li><b>Embrague centrífugo:</b> revisa zapatas y campana. Una campana azulada o rayada indica recalentamiento: cambia el conjunto.</li></ul>"},
+{id:"embrague-discos",s:"Transmisión",t:"Discos de embrague: cambio y síntomas",p:1,k:"embrague discos patina arrastre clutch espesor",
+b:"<ul><li><b>Hidrata los discos nuevos 30 minutos en aceite limpio</b> antes de montar. Espesor mínimo de referencia: 2.7 mm.</li><li><b>Patina en alta:</b> discos gastados o resortes vencidos. <b>Arrastra en neutro:</b> cable mal ajustado o discos pegados.</li><li>Aprieta los resortes en cruz y de forma pareja, con el torque del manual.</li></ul>"},
+{id:"guayas",s:"Transmisión",t:"Guayas: lubricación, ajuste y cambio",p:1,k:"guayas cable embrague acelerador freno lubricar ajuste",
+b:"<ul><li><b>Lubricación:</b> aplica lubricante por el extremo superior y deja que baje por dentro. Una guaya seca se pone dura y se rompe.</li><li><b>Ajuste de embrague:</b> deja el juego libre que indica el manual en la maneta. Sin juego, el embrague patina; con mucho, no desembraga.</li><li><b>Cambio:</b> pasa la nueva por la misma ruta de la vieja, sin curvas cerradas ni roce con el escape.</li></ul>"},
+{id:"cluster",s:"Chasis",t:"Cluster / tablero: flotador e indicadores",p:1,k:"cluster tablero flotador tanque gasolina velocímetro testigos",
+b:"<ul><li><b>Medidor de gasolina loco:</b> flotador pegado, varilla doblada o resistencia dañada. Revisa el flotador antes de cambiar el tablero.</li><li><b>Velocímetro muerto:</b> guaya rota, sensor o piñón de la rueda. Prueba girando la rueda con el tablero a la vista.</li><li><b>Testigos que no prenden:</b> bombillos, pistas del cluster o el sensor correspondiente.</li></ul>"},
+{id:"racing",s:"Motor",t:"Potenciación racing: qué implica de verdad",p:1,k:"racing potenciación pwk escape avance tiempo competencia",
+b:"<ul><li><b>Avance de tiempo, escapes racing y carburadores PWK:</b> una sola mejora sin el resto del conjunto no da potencia real y puede dañar el motor.</li><li>Toda potenciación exige carburación o inyección acorde, bujía adecuada y pruebas. Lo que anda más, gasta más y exige más mantenimiento.</li><li>Estas modificaciones son para competencia o circuito. En la calle pueden ser ilegales y anulan garantías: avísale eso a tu cliente.</li></ul>"},
+{id:"frenos-avanzado",s:"Frenos",t:"Frenos avanzados: bomba, caliper y disco",p:1,k:"bomba freno caliper pistón disco alabeado latiguillo purga",
+b:"<ul><li><b>Bomba:</b> si la maneta se va al fondo sin frenar, sospecha de la bomba o de aire. Revisa el depósito, el diafragma y las juntas.</li><li><b>Caliper:</b> pistón atascado o guardapolvo roto recalienta el disco y gasta la pastilla de un lado.</li><li><b>Disco alabeado:</b> vibración al frenar. Mide el alabeo y cambia el disco si supera el límite del manual. Revisa latiguillos cuarteados.</li></ul>"},
+{id:"efi",s:"Eléctrico",t:"Inyección electrónica (EFI): bomba, inyector y sensores",p:1,k:"inyección efi bomba inyector tps códigos falla sensores",
+b:"<ul><li><b>Síntomas:</b> no enciende, se apaga, jalonea o gasta mucha gasolina. Primero lo básico: batería, fusibles y conectores.</li><li><b>Bomba:</b> debe sonar al pasar la llave. Sin presión no hay inyección: revisa relay, fusible y filtro de la bomba.</li><li><b>Inyector y TPS:</b> un inyector tapado da falla en un régimen; el TPS descalibrado da respuesta irregular. La lectura de códigos y los valores se hacen con el escáner o el procedimiento del manual de tu modelo.</li></ul>"},
+{id:"valvulas",s:"Motor",t:"Válvulas: calibración y síntomas",p:1,k:"válvulas calibración holgura ruido admisión escape",
+b:"<ul><li><b>Ruido de válvulas (tictic) en frío:</b> holgura excesiva. <b>Sin ruido pero sin fuerza:</b> holgura cerrada, la válvula no sella.</li><li><b>Calibración:</b> motor frío, pistón en el punto correcto, galgas en admisión 0.05-0.08 mm y escape 0.08-0.12 mm. Confirma con tu manual.</li><li>Una válvula quemada da compresión baja y falla constante: se confirma con la prueba de compresión y de fuga.</li></ul>"},
+{id:"arranque-motor",s:"Eléctrico",t:"Motor de arranque: bendix y carbones",p:1,k:"motor arranque bendix carbones gira pesado no gira",
+b:"<ul><li><b>Gira pesado:</b> batería baja, bornes flojos o carbones gastados.</li><li><b>Gira pero no engancha:</b> bendix patinando o cremallera dañada.</li><li><b>Carbones:</b> si están cortos o el colector está sucio, el arranque falla en caliente. Limpia el colector y cambia los carbones en juego.</li></ul>"},
+{id:"chasis-direccion",s:"Chasis",t:"Dirección y chasis: cunas y rodamientos",p:1,k:"dirección cunas juego rodamientos rueda chasis vibra",
+b:"<ul><li><b>Juego en la dirección:</b> con la rueda delantera en el aire, mueve las barras: si hay golpe o juego, las cunas están flojas o picadas.</li><li><b>Dirección dura o con puntos:</b> cunas marcadas. Se cambian en juego, con grasa nueva y el apriete del manual.</li><li><b>Rodamientos de rueda:</b> ruido o juego lateral. Cambia siempre en par y con el sello hacia afuera.</li></ul>"},
+{id:"escape",s:"Motor",t:"Escape: juntas, catalizador y ruido",p:1,k:"escape catalizador junta ruido humo fuga",
+b:"<ul><li><b>Fuga en la junta:</b> soplido y petardeo al soltar. Cambia la junta y aprieta parejo.</li><li><b>Catalizador tapado:</b> pérdida de fuerza y calor excesivo. No lo vacíes sin explicarle al cliente las consecuencias legales y de emisiones.</li><li><b>Ruido nuevo:</b> revisa soportes, tornillos y el interior del silenciador suelto.</li></ul>"},
+{id:"caja-cambios",s:"Transmisión",t:"Caja de cambios: duros, falsos neutros y selector",p:1,k:"caja cambios duro falso neutro selector neutro",
+b:"<ul><li><b>Cambios duros:</b> embrague mal ajustado, aceite viejo o selector gastado. Empieza por lo simple: cable y aceite.</li><li><b>Falso neutro entre marchas:</b> selector o tambor con desgaste, o palanca mal ajustada.</li><li><b>Se sale la marcha:</b> engranajes o horquillas gastadas: toca abrir la caja. No lo dejes: rompe más piezas.</li></ul>"},
+{id:"carburador-avanzado",s:"Alimentación",t:"Carburación avanzada: chicleres, aguja y sincronización",p:1,k:"chicleres aguja pwk sincronización mezcla fina carburación",
+b:"<ul><li><b>Chicler de alta:</b> manda en alta velocidad. <b>Chicler de baja:</b> manda en ralentí y baja. <b>Aguja:</b> manda en medios. Cambia uno a la vez y prueba.</li><li><b>Mezcla fina:</b> bujía color café es la meta. Blanca es peligro (pobre), negra es exceso (rica).</li><li><b>Dos carburadores:</b> sincroniza con vacuómetro para que ambos abran parejo. Sin sincronizar, la moto vibra y gasta más.</li></ul>"},
+{id:"encendido-avanzado",s:"Encendido",t:"Encendido avanzado: avance, captora y chispa débil",p:1,k:"avance captora plato chispa débil caliente fría bujía",
+b:"<ul><li><b>Avance:</b> un avance adelantado cascabelea; atrasado pierde fuerza y calienta el escape.</li><li><b>Captora:</b> si falla en caliente y vuelve en frío, la captora es la sospechosa. Mide su resistencia y compara con el manual.</li><li><b>Bujía caliente/fría:</b> el grado térmico debe ser el del manual. Una bujía muy caliente funde el electrodo; muy fría se ensucia.</li></ul>"},
+{id:"carga-flujo",s:"Eléctrico",t:"Diagnóstico completo de carga: batería, estator y regulador",p:1,k:"carga flujo diagnóstico estator regulador batería orden",
+b:"<ul><li><b>Orden correcto:</b> 1) batería (voltaje en reposo y bornes), 2) estator (resistencia y salida), 3) regulador (voltaje a 3000 RPM).</li><li>Si la batería es nueva y se descarga rodando, el problema casi nunca es la batería: es estator o regulador.</li><li>Revisa conectores quemados entre el estator y el regulador: es una falla clásica y barata de resolver.</li></ul>"},
+{id:"suspension-trasera",s:"Suspensión",t:"Suspensión trasera: amortiguadores y basculante",p:1,k:"amortiguador trasero precarga bujes basculante rebota",
+b:"<ul><li><b>Rebota más de dos veces:</b> amortiguador vencido. <b>Golpe seco:</b> bujes del basculante o del amortiguador gastados.</li><li><b>Precarga:</b> ajústala al peso y al uso. Mucha precarga deja la moto dura; poca, pega en los topes.</li><li>Revisa el eje del basculante y sus rodamientos: un juego ahí se siente como si la moto doblara sola.</li></ul>"},
+{id:"refrigeracion-electro",s:"Refrigeración",t:"Electroventilador: termoswitch, relay y prueba directa",p:1,k:"electroventilador termoswitch relay fusible prueba directa recalienta",
+b:"<ul><li><b>No prende el electro:</b> fusible, relay, termoswitch o el propio motor del ventilador. Prueba en ese orden.</li><li><b>Prueba directa:</b> alimenta el ventilador directo de la batería por un instante: si gira, el problema está en el control; si no, el ventilador está dañado.</li><li><b>Termoswitch:</b> debe cerrar entre 85 °C y 92 °C. Si el ventilador prende tarde, el motor sufre: no lo dejes así.</li></ul>"},
+{id:"mantenimiento-programa",s:"Mantenimiento",t:"Plan de mantenimiento por kilometraje",p:1,k:"mantenimiento plan kilometraje servicio 1000 6000 12000",
+b:"<ul><li><b>Cada 1,000 km:</b> nivel de aceite, presión de cauchos, cadena, luces y frenos.</li><li><b>Cada 3,000 – 6,000 km:</b> cambio de aceite y filtro, bujía, filtro de aire, revisión de frenos y guayas.</li><li><b>Cada 12,000 km:</b> válvulas, transmisión, suspensión, refrigeración y revisión eléctrica completa.</li></ul><div class='warn'>Intervalos de referencia general. El manual de tu modelo manda: algunas motos piden servicio antes.</div>"}];
+var PRO_WORD = "MOTOSPRO2026";
+</script>
+<script>
+
+"use strict";
+var WA_URL = "https://wa.me/584143956441?text=" + encodeURIComponent("Hola, quiero activar la licencia PRO de MotosPro Master PRO ($9.99 USD).");
+var unlocked = false;
+try{ unlocked = localStorage.getItem("mpp_pro") === "1"; }catch(e){}
+
+function $(id){ return document.getElementById(id); }
+function norm(s){
+  return (s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9ñ ]/g," ");
+}
+function plain(html){ return html.replace(/<[^>]*>/g," ").replace(/\s+/g," ").trim(); }
+
+var SYSTEMS = [];
+GUIDES.forEach(function(g){ if(SYSTEMS.indexOf(g.s) === -1) SYSTEMS.push(g.s); });
+
+function isOpen(g){ return g.p === 0 || unlocked; }
+
+function renderChips(active){
+  var html = '<button data-sys="__all__" class="' + (active === "__all__" ? "on" : "") + '">Todos</button>';
+  SYSTEMS.forEach(function(s){
+    html += '<button data-sys="' + s + '" class="' + (active === s ? "on" : "") + '">' + s + "</button>";
+  });
+  $("sysChips").innerHTML = html;
+  $("sysChips").querySelectorAll("button").forEach(function(b){
+    b.addEventListener("click", function(){ renderGuides(b.getAttribute("data-sys")); renderChips(b.getAttribute("data-sys")); });
+  });
+}
+
+function guideHTML(g){
+  var open = isOpen(g);
+  var tag = g.p === 0 ? '<span class="tag tag-free">Gratis</span>'
+    : (open ? '<span class="tag tag-pro">PRO</span>' : '<span class="tag tag-lock">PRO · Bloqueado</span>');
+  var body = open ? '<div class="body">' + g.b + "</div>"
+    : '<div class="locknote">🔒 Módulo PRO. Un solo pago de $9.99 abre <b>todos</b> los módulos PRO, no uno por uno. <a href="#buySection" onclick="document.getElementById(\'buySection\').scrollIntoView({behavior:\'smooth\'});return false;">Ver cómo activar</a>.</div>';
+  return '<article class="guide' + (g.p === 1 ? " pro" : "") + (open ? "" : " locked") + '" id="g-' + g.id + '">'
+    + "<h4>" + g.t + tag + "</h4>" + body + "</article>";
+}
+
+function renderGuides(filter){
+  filter = filter || "__all__";
+  var html = "";
+  SYSTEMS.forEach(function(s){
+    if(filter !== "__all__" && filter !== s) return;
+    var list = GUIDES.filter(function(g){ return g.s === s; });
+    html += '<div class="sys"><h3>' + s + "</h3>" + list.map(guideHTML).join("") + "</div>";
+  });
+  $("guides").innerHTML = html;
+  $("statGuides").textContent = GUIDES.length;
+}
+
+function applyProState(){
+  $("proState").textContent = unlocked ? "PRO ACTIVO" : "Gratis";
+  if(unlocked){
+    $("proHeroTitle").textContent = "✅ PRO activo: todo desbloqueado";
+    $("proHeroText").textContent = "Pagaste una sola vez y todos los módulos PRO están abiertos en esta página, en este teléfono.";
+    $("proHeroBody").style.display = "none";
+    $("proActiveNote").classList.add("show");
+  }
+}
+
+function tryUnlock(){
+  var v = $("keyInput").value.trim().toUpperCase();
+  if(v === PRO_WORD){
+    unlocked = true;
+    try{ localStorage.setItem("mpp_pro", "1"); }catch(e){}
+    $("keyMsg").textContent = "¡Felicidades! Módulos PRO desbloqueados con éxito.";
+    $("keyMsg").style.color = "#14532d";
+    applyProState();
+    renderGuides("__all__");
+    renderChips("__all__");
+  } else {
+    $("keyMsg").textContent = "Esa palabra no coincide. Revisa mayúsculas y espacios, o pide tu palabra por WhatsApp.";
+    $("keyMsg").style.color = "#8a1f0d";
+  }
+}
+
+/* ---------- buscador con lista de resultados ---------- */
+function runSearch(q){
+  var box = $("results");
+  q = (q || "").trim();
+  if(q.length < 2){ box.classList.remove("show"); box.innerHTML = ""; return; }
+  var nq = norm(q);
+  var words = nq.split(/\s+/).filter(function(w){ return w.length > 1; });
+  var scored = [];
+  GUIDES.forEach(function(g){
+    var hay = norm(g.t + " " + g.k + " " + plain(g.b));
+    var score = 0;
+    words.forEach(function(w){ if(hay.indexOf(w) !== -1) score += 2; });
+    if(hay.indexOf(nq) !== -1) score += 3;
+    if(score > 0) scored.push({g:g, score:score});
+  });
+  scored.sort(function(a,b){ return b.score - a.score; });
+  scored = scored.slice(0, 8);
+  if(!scored.length){
+    box.innerHTML = '<div class="res-item"><b>Sin resultados para "' + q + '"</b><p>Prueba con: carburador, frenos, CDI, cadena, bujía, batería, válvulas o scooter.</p></div>';
+    box.classList.add("show");
+    return;
+  }
+  box.innerHTML = scored.map(function(r){
+    var open = isOpen(r.g);
+    var tag = r.g.p === 0 ? '<span class="tag tag-free">Gratis</span>'
+      : (open ? '<span class="tag tag-pro">PRO</span>' : '<span class="tag tag-lock">PRO</span>');
+    var ex = plain(r.g.b).slice(0, 130) + "…";
+    return '<div class="res-item" data-id="' + r.g.id + '" data-open="' + (open ? "1" : "0") + '"><b>' + r.g.t + tag + "</b><p>" + ex + "</p></div>";
+  }).join("");
+  box.classList.add("show");
+  box.querySelectorAll(".res-item").forEach(function(el){
+    el.addEventListener("click", function(){
+      if(el.getAttribute("data-open") !== "1"){
+        $("buySection").scrollIntoView({behavior:"smooth"});
+        $("keyInput").focus();
+        return;
+      }
+      var target = $("g-" + el.getAttribute("data-id"));
+      if(target){
+        target.scrollIntoView({behavior:"smooth", block:"start"});
+        target.style.outline = "3px solid #e8a90c";
+        setTimeout(function(){ target.style.outline = ""; }, 1600);
+      }
+      box.classList.remove("show");
+    });
+  });
+}
+
+/* ---------- voz ---------- */
+var RecogCtor = (typeof window !== "undefined") && (window.SpeechRecognition || window.webkitSpeechRecognition) || null;
+function setupVoice(){
+  var btn = $("micBtn");
+  if(!RecogCtor){ btn.style.opacity = 0.45; btn.title = "Este navegador no permite voz"; return; }
+  var rec = null, listening = false;
+  btn.addEventListener("click", function(){
+    if(listening){ try{ rec.stop(); }catch(e){} return; }
+    rec = new RecogCtor();
+    rec.lang = "es-ES";
+    rec.interimResults = false;
+    rec.onresult = function(ev){
+      var txt = ev.results[0][0].transcript;
+      $("searchInput").value = txt;
+      runSearch(txt);
+    };
+    rec.onstart = function(){ listening = true; btn.classList.add("listening"); };
+    rec.onend = function(){ listening = false; btn.classList.remove("listening"); };
+    rec.onerror = function(){ listening = false; btn.classList.remove("listening"); };
+    try{ rec.start(); }catch(e){}
+  });
+}
+
+/* ---------- calculadoras ---------- */
+function voltDiagnosis(v){
+  if(isNaN(v)) return {cls:"", txt:""};
+  if(v < 12.4) return {cls:"bad", txt:"🔴 <b>Batería baja o sin carga (" + v.toFixed(1) + " V).</b> Carga la batería con cargador lento y vuelve a medir. Si no retiene la carga, la batería está al final de su vida. Revisa bornes y fusible principal."};
+  if(v < 13.5) return {cls:"warn2", txt:"🟡 <b>Carga baja (" + v.toFixed(1) + " V).</b> El sistema carga poco. Revisa en orden: bornes y masa, conectores del estator y salida del regulador."};
+  if(v <= 14.8) return {cls:"ok", txt:"🟢 <b>Carga óptima (" + v.toFixed(1) + " V).</b> Alternador/regulador funcionando bien. Si la moto igual falla, el problema está en otro lado (batería, arranque o encendido)."};
+  return {cls:"bad", txt:"🔴 <b>Sobrecarga (" + v.toFixed(1) + " V).</b> Regulador sospechoso. No sigas rodando así: puede quemar luces y dañar la batería. Revisa regulador, masa y conectores."};
+}
+function ohmDiagnosis(p, s, pk){
+  var lines = [];
+  function band(v, lo, hi, name, unit){
+    if(isNaN(v)) return;
+    if(v === 0) lines.push("🔴 " + name + ": 0 " + unit + " — en corto. La bobina está dañada.");
+    else if(v < lo || v > hi) lines.push("🟡 " + name + ": " + v + " " + unit + " — fuera de la referencia típica (" + lo + " – " + hi + " " + unit + "). Confirma con el manual de tu modelo.");
+    else lines.push("🟢 " + name + ": " + v + " " + unit + " — dentro de la referencia típica.");
+  }
+  band(p, 0.2, 5, "Primaria", "Ω");
+  band(s, 5, 20, "Secundaria", "kΩ");
+  band(pk, 100, 500, "Captora / pickup", "Ω");
+  if(!lines.length) return {cls:"", txt:""};
+  var extra = "<br>Una lectura OL (infinito) significa bobina abierta: no hay continuidad. Mide siempre con el componente desconectado y compara con el manual de tu modelo.";
+  return {cls:"ok", txt:lines.join("<br>") + extra};
+}
+
+/* ---------- inicio ---------- */
+$("waTop").href = WA_URL;
+$("waBottom").href = WA_URL;
+applyProState();
+renderGuides("__all__");
+renderChips("__all__");
+setupVoice();
+var searchTimer = null;
+$("searchInput").addEventListener("input", function(){
+  clearTimeout(searchTimer);
+  var v = this.value;
+  searchTimer = setTimeout(function(){ runSearch(v); }, 220);
+});
+$("searchInput").addEventListener("keydown", function(e){
+  if(e.key === "Enter"){ runSearch(this.value); }
+});
+$("unlockBtn").addEventListener("click", tryUnlock);
+$("keyInput").addEventListener("keydown", function(e){ if(e.key === "Enter") tryUnlock(); });
+$("gotoUnlock").addEventListener("click", function(){
+  $("buySection").scrollIntoView({behavior:"smooth"});
+  setTimeout(function(){ $("keyInput").focus(); }, 400);
+});
+$("voltBtn").addEventListener("click", function(){
+  var r = voltDiagnosis(parseFloat($("voltInput").value));
+  var out = $("voltOut");
+  out.className = "calc-out show " + r.cls;
+  out.innerHTML = r.txt;
+});
+$("ohmBtn").addEventListener("click", function(){
+  var r = ohmDiagnosis(parseFloat($("ohmPrim").value), parseFloat($("ohmSec").value), parseFloat($("ohmPick").value));
+  var out = $("ohmOut");
+  if(!r.txt){ out.className = "calc-out"; out.innerHTML = ""; return; }
+  out.className = "calc-out show " + r.cls;
+  out.innerHTML = r.txt;
+});
+if(unlocked){
+  $("keyInput").value = "";
+  $("keyMsg").textContent = "PRO ya está activo en este teléfono.";
+}
+
+</script>
+</body>
+</html>
