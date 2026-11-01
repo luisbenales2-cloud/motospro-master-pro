@@ -75,6 +75,13 @@
   .locked{opacity:.92}
   .locked .body{display:none}
   .locknote{margin-top:8px;font-size:13.5px;color:var(--soft)}
+  .videos{margin-top:10px;border-top:1px dashed var(--line);padding-top:8px}
+  .videos b{font-size:13px}
+  .videos ul{margin:6px 0 0;padding-left:18px}
+  .videos li{margin:5px 0;font-size:13.5px;line-height:1.5}
+  .videos a{color:#9a6d00;font-weight:700;text-decoration:none}
+  .videos .ch{color:var(--soft);font-size:12.5px}
+  .videos .vhint{margin:6px 0 0;font-size:12.5px;color:var(--soft);line-height:1.5}
   /* calculadoras */
   .calc-out{margin-top:12px;border-radius:12px;padding:13px 14px;font-size:15px;line-height:1.6;display:none}
   .calc-out.show{display:block}
@@ -131,9 +138,9 @@
       </ul>
       <div class="btn-row">
         <a class="btn btn-whats" id="waTop" href="#" target="_blank" rel="noopener">📲 Activar PRO por WhatsApp — $9.99</a>
-        <button class="btn btn-gold" id="gotoUnlock">Ya pagué, tengo mi palabra</button>
+        <button class="btn btn-gold" id="gotoUnlock">Ya pagué, tengo mi clave</button>
       </div>
-      <p class="hint" style="margin-top:10px">Coordinas el pago por WhatsApp: Pago Móvil, Binance Pay, tarjeta, Airtm, Zinli o Bybit. Al confirmar, recibes tu palabra de acceso.</p>
+      <p class="hint" style="margin-top:10px">Coordinas el pago por WhatsApp: Pago Móvil, Binance Pay, tarjeta, Airtm, Zinli o Bybit. Al confirmar, recibes tu clave de acceso.</p>
     </div>
     <div class="unlock-ok" id="proActiveNote">✅ PRO ACTIVO. Todos los módulos están abiertos en esta página. Si cierras y vuelves, tu acceso sigue guardado en este teléfono.</div>
   </section>
@@ -194,13 +201,14 @@
       <li>💳 Tarjeta de crédito / débito</li>
       <li>🌐 Airtm · Zinli · Bybit</li>
     </ul>
-    <p class="hint">Todos los métodos se coordinan por WhatsApp. Envías tu comprobante y recibes tu palabra de acceso.</p>
+    <p class="hint">Todos los métodos se coordinan por WhatsApp. Envías tu comprobante y recibes tu clave de acceso.</p>
     <div class="btn-row">
       <a class="btn btn-whats" id="waBottom" href="#" target="_blank" rel="noopener">📲 Quiero activar PRO — $9.99</a>
     </div>
-    <div style="margin-top:18px;border-top:1px solid rgba(255,217,122,.35);padding-top:14px">
-      <label for="keyInput" style="color:#e8d5ac">¿Ya pagaste? Introduce tu palabra de acceso</label>
-      <input type="password" id="keyInput" placeholder="Tu palabra de acceso" autocomplete="off">
+    <div id="keyBox" style="margin-top:18px;border-top:1px solid rgba(255,217,122,.35);padding-top:14px">
+      <p class="hint" id="deviceLine">Código de este teléfono: <b id="deviceCode" style="color:#ffe9b0">…</b> &nbsp;·&nbsp; Pide tu clave por WhatsApp con este código.</p>
+      <label for="keyInput" style="color:#e8d5ac">¿Ya pagaste? Introduce tu clave PRO</label>
+      <input type="password" id="keyInput" placeholder="Tu clave PRO (ejemplo: P-XXXXXXX)" autocomplete="off">
       <div class="btn-row">
         <button class="btn btn-gold" id="unlockBtn">Desbloquear PRO</button>
       </div>
@@ -328,12 +336,53 @@ b:"<ul><li><b>Rebota más de dos veces:</b> amortiguador vencido. <b>Golpe seco:
 b:"<ul><li><b>No prende el electro:</b> fusible, relay, termoswitch o el propio motor del ventilador. Prueba en ese orden.</li><li><b>Prueba directa:</b> alimenta el ventilador directo de la batería por un instante: si gira, el problema está en el control; si no, el ventilador está dañado.</li><li><b>Termoswitch:</b> debe cerrar entre 85 °C y 92 °C. Si el ventilador prende tarde, el motor sufre: no lo dejes así.</li></ul>"},
 {id:"mantenimiento-programa",s:"Mantenimiento",t:"Plan de mantenimiento por kilometraje",p:1,k:"mantenimiento plan kilometraje servicio 1000 6000 12000",
 b:"<ul><li><b>Cada 1,000 km:</b> nivel de aceite, presión de cauchos, cadena, luces y frenos.</li><li><b>Cada 3,000 – 6,000 km:</b> cambio de aceite y filtro, bujía, filtro de aire, revisión de frenos y guayas.</li><li><b>Cada 12,000 km:</b> válvulas, transmisión, suspensión, refrigeración y revisión eléctrica completa.</li></ul><div class='warn'>Intervalos de referencia general. El manual de tu modelo manda: algunas motos piden servicio antes.</div>"}];
-var PRO_WORD = "MOTOSPRO2026";
+
+var VIDEOS = {"carburador":[{"t":"cómo limpiar un carburador de motocicleta","c":"MEXICAN BIKERS AND FIGHTERS","u":"https://www.youtube.com/watch?v=RFNfKlG-Qs8","l":"es"},{"t":"1145 | COMO LAVAR CARBURADOR MOTOCICLETA ESTANDAR [4K 2025]","c":"Piston Bikers","u":"https://www.youtube.com/watch?v=wNcxQQa30Ro","l":"es"},{"t":"Como limpiar un carburador de motocicleta (FULL HD)","c":"ASI SE HACE","u":"https://www.youtube.com/watch?v=aBo32leDPRA","l":"es"}],"carburador-sintomas":[{"t":"Porque ACELERO y se AHOGA mi MOTO(SOLUCIÓN)","c":"ACMÉCANICA motos TV","u":"https://www.youtube.com/watch?v=6rKRWHElz9U","l":"es"},{"t":"Porque mi moto no arranca en Frío? / Se Apaga / se ahoga (3 Soluciones)","c":"GPX Motovlogs","u":"https://www.youtube.com/watch?v=4yK9NHSS-tU","l":"es"},{"t":"❌ Porque mi Moto le Cuesta ENCENDER si está bien CARBURADA y Tiene CHISPA","c":"ToroMotos","u":"https://www.youtube.com/watch?v=icV4e3875fc","l":"es"}],"bujia-color":[{"t":"PORQUE LA BUJIA DE MI MOTO SALE NEGRO, MARRON O BLANCO","c":"Adrilaba","u":"https://www.youtube.com/watch?v=zDb1sLSA4eM","l":"es"},{"t":"¿Que indica el color de la bujía? Revisar motor con las bujías.","c":"Moto Warrior","u":"https://www.youtube.com/watch?v=pxrJIMY6fDs","l":"es"},{"t":"Blog #109 - Cómo leer la bujía","c":"Mecánica De La Moto","u":"https://www.youtube.com/watch?v=uh3W13slQm8","l":"es"}],"bujia-sin-chispa":[{"t":"Como revisar la bovina de alta y el CDI","c":"Mecánica Nick","u":"https://www.youtube.com/watch?v=6agA4fpvOuo","l":"es"},{"t":"Como comprobar si el CDI de una moto funciona","c":"ACMÉCANICA motos TV","u":"https://www.youtube.com/watch?v=4zAtlHlEEXk","l":"es"},{"t":"❤Con solo $2 pesos😉 Revisa si el CDI de tu moto sirve, SIN CHISPA?( DIAGNOSTICO 100%EFECTIVO)","c":"ACMÉCANICA motos TV","u":"https://www.youtube.com/watch?v=yfMpetJadMI","l":"es"}],"neumaticos":[{"t":"Aprende el significado de los código en el neumático de tu moto","c":"MotoMundiTv","u":"https://www.youtube.com/watch?v=gHHX0DDsvC4","l":"es"},{"t":"Aprende cómo leer una llanta para tu moto con Fullmoto","c":"Fullmoto Colombia","u":"https://www.youtube.com/watch?v=qW1BFYtviCA","l":"es"},{"t":"¿Qué pasa si cambio mis llantas por unas más anchas? | aumentará la velocidad?","c":"Rider17","u":"https://www.youtube.com/watch?v=0Vmnn_0wtwI","l":"es"}],"neumaticos-desgaste":[{"t":"¿Cuándo debo cambiar neumáticos? Identifica el desgaste en tus neumáticos de moto","c":"MotoMundiTv","u":"https://www.youtube.com/watch?v=YslT7mfl3P8","l":"es"},{"t":"LO QUE NO SABIAS DE LAS LLANTAS , MEDIDAS , COMPUESTOS ,CARCAZAS !!","c":"Kapital Llantas","u":"https://www.youtube.com/watch?v=VfcYdW3_Pp8","l":"es"},{"t":"Neumáticos de moto: Las 10 preguntas más frecuentes","c":"Moto1Pro y EnduroPro","u":"https://www.youtube.com/watch?v=r3s3YWxEwcQ","l":"es"}],"consumo-parasito":[{"t":"❌ porque la BATERÍA de moto se Descarga en la Noche parqueada","c":"ToroMotos","u":"https://www.youtube.com/watch?v=EhufaJdDT40","l":"es"}],"multimetro-uso":[{"t":"BLOG #53 - Uso del tester o multímetro","c":"Mecánica De La Moto","u":"https://www.youtube.com/watch?v=0E7qaAvDfG8","l":"es"},{"t":"Como usar MULTIMETRO DIGITAL - funciones básicas⚡","c":"Hetzu Academy","u":"https://www.youtube.com/watch?v=Z1pxudDk-BM","l":"es"},{"t":"COMO SABER SI MI REGULADOR DE VOLTAJE ESTA DAÑADO O NO ? PRUEBAS CON MULTÍMETRO 🔧","c":"Top riders speed","u":"https://www.youtube.com/watch?v=00hwE5bKPys","l":"es"}],"aceites":[{"t":"Tipos de ACEITE PARA MOTO 😯. ¿Cómo elegir el correcto? 🏍️🛢️","c":"Motocard","u":"https://www.youtube.com/watch?v=AJN3aAvEUiI","l":"es"},{"t":"Prueba extrema con diferentes aceites en una moto","c":"MEXICAN BIKERS AND FIGHTERS","u":"https://www.youtube.com/watch?v=GVMICFrYL_k","l":"es"}],"frenos-pastillas":[{"t":"Cambio De Pastillas Delanteras De Moto @NickRider","c":"NickRider","u":"https://www.youtube.com/watch?v=6-QZTcJv9SI","l":"es"},{"t":"❌ Como cambiar las PASTILLAS de Freno Traseras en moto SCOOTER - Nmax 155","c":"ToroMotos","u":"https://www.youtube.com/watch?v=2-Wr-__Wzhc","l":"es"},{"t":"¿CÓMO CAMBIAR LAS PASTILLAS DE FRENO?","c":"Motoscoot","u":"https://www.youtube.com/watch?v=kxXCh8D5G94","l":"es"}],"frenos-liquido":[{"t":"como purgar tu bomba de freno de tu moto  en tan solo 3 minutos!![solución definitiva]","c":"Motolocooficial","u":"https://www.youtube.com/watch?v=xGZ9fLKSYzQ","l":"es"},{"t":"Aprende a Cambiar el Líquido de Frenos Sin Fallar En El Intento.","c":"Energy Motos","u":"https://www.youtube.com/watch?v=Mrtk2LXCQwA","l":"es"},{"t":"Como purgar los frenos de una moto correctamente","c":"MotosCAmx","u":"https://www.youtube.com/watch?v=T1sii0Hua0k","l":"es"}],"frenos-tambor":[{"t":"cómo ajustar el freno trasero de tambor de tu moto de manera fácil y sencilla, aprende como","c":"con wil","u":"https://www.youtube.com/watch?v=rB9AHuC2Fgg","l":"es"}],"cadena":[{"t":"Cómo limpiar, tensar y engrasar la CADENA DE TU MOTO 🏍","c":"Motocard","u":"https://www.youtube.com/watch?v=opWNgINvyQY","l":"es"},{"t":"COMO TENSIONAR LA CADENA DE TU MOTO |MECALEJO|","c":"MECALEJO","u":"https://www.youtube.com/watch?v=4_OGPF5QBbw","l":"es"},{"t":"Tensar y engrasar cadena de moto, por EnduroPro","c":"Moto1Pro y EnduroPro","u":"https://www.youtube.com/watch?v=sDWyvyCDnd0","l":"es"}],"cadena-desgaste":[{"t":"Como CAMBIAR kit de ARRASTRE PULSAR 200 NS ► +DESLIZADOR CADENA","c":"Fixer Motos","u":"https://www.youtube.com/watch?v=HrB-vsf0RPY","l":"es"},{"t":"🏍️ Tutorial paso a paso: Cómo cambiar el kit de arrastre de tu moto","c":"Yo amo las Motos","u":"https://www.youtube.com/watch?v=KrSBITs7VhY","l":"es"}],"bateria-guia":[{"t":"como saber SI MI BATERÍA DE MI MOTO NO RETIENE CARGA","c":"ACMÉCANICA motos TV","u":"https://www.youtube.com/watch?v=NTtRK8olSUY","l":"es"},{"t":"PORQUE MI MOTO NO CARGA LA BATERÍA / SOLUCION REVISA ESTA PIEZA","c":"Mundo Gas RD","u":"https://www.youtube.com/watch?v=9KwtKgIGroo","l":"es"},{"t":"Como activar batería de motocicleta.","c":"El aprendiz de mecánico","u":"https://www.youtube.com/watch?v=i6YpouDKRX8","l":"es"}],"fusibles":[{"t":"Tu moto NO PRENDE NADA? esto debes de hacer para SOLUCIONARLO","c":"ACMÉCANICA motos TV","u":"https://www.youtube.com/watch?v=pBAXL7896o8","l":"es"},{"t":"Como cambiar el fusible de la motocicleta #short","c":"RolAndo Ruedas","u":"https://www.youtube.com/watch?v=qoGOKu0yjbw","l":"es"}],"luces-basicas":[{"t":"Luz del freno (stop) No enciende / solución.","c":"RolAndo Ruedas","u":"https://www.youtube.com/watch?v=sc5epPhAtFw","l":"es"},{"t":"Honda VISION 110 - HEADLIGHT Bulb Replacement - Complete Mounting Tutorial","c":"Ideal Bike Adventures","u":"https://www.youtube.com/watch?v=N7T27Mhm6Vg","l":"en"}],"ralenti":[{"t":"Mi moto se apaga cuando dejo de acelerar ( EXPLICACIÓN Y SOLUCIÓN)","c":"ASI SE HACE","u":"https://www.youtube.com/watch?v=UThwxGVH42I","l":"es"},{"t":"MxM Ralenti kawasaki Er6N regular Ralenti facil y Rapido","c":"MOTEROS X EL MUNDO","u":"https://www.youtube.com/watch?v=g2X0QDrI_cA","l":"es"},{"t":"Al acelerar, se apaga la moto.🔴🐷 3 causas","c":"MOTOS CHINAS punto CDI","u":"https://www.youtube.com/watch?v=fHYSWKz8ytA","l":"es"}],"humo-color":[{"t":"4 TIPOS DE HUMOS EN MI MOTOCICLETA ! POR QUE BOTA HUMO ? SOLUCION /HUMO NEGRO, BLANCO, AZUL Y GRIS🔧","c":"Top riders speed","u":"https://www.youtube.com/watch?v=5azk7sFAsNg","l":"es"},{"t":"Tipos De Humo en Tu Moto, Como Solucionar Problemas.","c":"Compartir Sabiduría.","u":"https://www.youtube.com/watch?v=k7WUS5z6M-4","l":"es"},{"t":"⛔ Porque mi Moto bota HUMO BLANCO por el ESCAPE","c":"ToroMotos","u":"https://www.youtube.com/watch?v=Xk0m1phnkoQ","l":"es"}],"ruidos-motor":[{"t":"RUIDOS EN EL MOTOR?? Como evirarlos y eliminarlos","c":"ACMÉCANICA motos TV","u":"https://www.youtube.com/watch?v=HD-0hr8eluA","l":"es"},{"t":"Mi MOTO suena como MATRACA ! motivo y solucion!","c":"MEXICAN BIKERS AND FIGHTERS","u":"https://www.youtube.com/watch?v=rUim9BEfzH0","l":"es"},{"t":"Blog #32 - Cadena de distribución","c":"Mecánica De La Moto","u":"https://www.youtube.com/watch?v=9ACJXSK8eHE","l":"es"}],"suspension-bastones":[{"t":"Mantenimiento y ajuste de SAE en horquillas de la kawasaki Ninja 300 \"Parte 1\"","c":"ElJineteDelViento","u":"https://www.youtube.com/watch?v=jxVnaF9qKmA","l":"es"},{"t":"SUSPENSIONES de COMPETICION 🔥 Cambio Valvulado Horquilla #ohlins #suspensiones #yamaha","c":"Victorius Garage","u":"https://www.youtube.com/watch?v=zOKDl5Ibhnw","l":"es"}],"suspension-retenes":[{"t":"Cambio de retenes de suspension Honda Dax, Motomel Dax, Guerrero Max Day y cualquier moto 110 !!!","c":"juan manuel berzano","u":"https://www.youtube.com/watch?v=x95LT-UhKgc","l":"es"},{"t":"Cambio De Aceite A Las Barras De Suspensión @NickRider","c":"NickRider","u":"https://www.youtube.com/watch?v=AjbJBBNl3Wo","l":"es"},{"t":"CAMBIO DE RETENES A LAS BARRAS DE MI ITALIKA FT125TS","c":"MTK motos","u":"https://www.youtube.com/watch?v=3qBb5UpWUXA","l":"es"}],"refrigeracion-agua":[{"t":"Se te recalienta la moto?? Tutorial cambio líquido refrigerante 🤩 fácil","c":"Eliza Garcia","u":"https://www.youtube.com/watch?v=U7-RT9TjyA0","l":"es"},{"t":"🏍️Circuito de Refrigeración HONDA SHADOW VT750C, comprobar componentes y solucionar problemas🏍️","c":"electromecanica_facil","u":"https://www.youtube.com/watch?v=o3sQDOH2v_g","l":"es"},{"t":"KTM RC390 Coolant change | Engine Ice Coolant |","c":"Kiran Shinde (KeeRev)","u":"https://www.youtube.com/watch?v=c79nIbhS5HI","l":"en"}],"refrigeracion-aire-aceite":[{"t":"MOTORES Refrigerados por AIRE vs ACEITE vs Enfriados por AGUA","c":"driving 4 answers en español","u":"https://www.youtube.com/watch?v=cHT-9hV4ZXs","l":"es"},{"t":"COMO instalar un RADIADOR de aceite para tu MOTOCICLETA tu solito bien fácil sin ayuda de nadie","c":"Entre llantas y motores","u":"https://www.youtube.com/watch?v=J2Lael-E0uM","l":"es"},{"t":"3 tipos de refrigeración en motos explicados fácil 😲","c":"TORQUE RACING","u":"https://www.youtube.com/watch?v=_Lt2DzbJ5ak","l":"es"}],"motor-tiempo":[{"t":"🔴TENSOR de CADENA y DISTRIBUCIÓN de [💫moto💫] ◀▶ (puesta a punto MOTOR de 4 tiempos)","c":"parmotor garage","u":"https://www.youtube.com/watch?v=ZrUF78JNFGQ","l":"es"},{"t":"SINTOMAS DE UNA MOTO FUERA DE TIEMPO","c":"Adrilaba","u":"https://www.youtube.com/watch?v=bZYlY0W2IvE","l":"es"},{"t":"🔧 PUESTA A PUNTO/MANTENIMIENTO KTM EXC-F 250/¡PONIENDO A PUNTO LA MOTO DE ENDURO DE MI NOVIA! 🏍️","c":"KIKE ALVAREZ BIKEANDRIDE","u":"https://www.youtube.com/watch?v=ZUnwg7fSMZU","l":"es"}],"motor-metrologia":[{"t":"Luz entre anillos de pistón, o Gap distancia entre puntas de aros de pistón.","c":"laloITA mecatrónica","u":"https://www.youtube.com/watch?v=qKUsE261dyk","l":"es"},{"t":"Medición del desgaste en los cilindros y cigüeñal","c":"UTN Racing Team","u":"https://www.youtube.com/watch?v=8IgvB9FMFWU","l":"es"},{"t":"Ovalización y conicidad del cilindro","c":"ITCA Instituto Tecnológico de Capacitación Automotriz","u":"https://www.youtube.com/watch?v=_kkJ-DTM9Po","l":"es"}],"motor-compresion":[{"t":"⛔ Como Medir La COMPRESIÓN De Un Motor De Moto","c":"ToroMotos","u":"https://www.youtube.com/watch?v=Cs3JmgRTZWQ","l":"es"},{"t":"Como Hacer la Prueba de Compresion al Motor (para saber las condiciones mecanicas del motor)","c":"Elecktro fe2","u":"https://www.youtube.com/watch?v=7C6kHDZCejw","l":"es"},{"t":"CÓMO COMPROBAR si las VÁLVULAS tienen FUGA DE COMPRESIÓN (PRUEBA DE HERMETICIDAD)","c":"Mecánica de Paulo","u":"https://www.youtube.com/watch?v=es3z9OZaPlU","l":"es"}],"ciguenal-biela":[{"t":"Comprobar HOLGURA CIGUEÑAL y RODAMIENTOS ruido moto 🛵⚙️","c":"TutorialesNecesarios","u":"https://www.youtube.com/watch?v=HhZYTGUofpw","l":"es"},{"t":"¿¿Qué función cumplen los cojinetes de biela y bancada del motor??","c":"AUTOTECNICATV","u":"https://www.youtube.com/watch?v=b1vEABf4QLM","l":"es"},{"t":"4 fallas en las bielas y como reparar","c":"MRQZ ØFF-RØAD","u":"https://www.youtube.com/watch?v=56dIj5rds7E","l":"es"}],"electrico-cdi":[{"t":"COMO PROBAR CDI DE MOTO 125,150,200,250 CC (FACIL Y RÁPIDO) PRUEBAS CON MULTÍMETRO Y MANUAL 🧑‍🔧","c":"Top riders speed","u":"https://www.youtube.com/watch?v=aSIKOjxu5aY","l":"es"},{"t":"Como comprobar si el CDI de una moto funciona","c":"ACMÉCANICA motos TV","u":"https://www.youtube.com/watch?v=4zAtlHlEEXk","l":"es"},{"t":"Probador de chispa de bujia utilizando CDI de 6 puntas -  Motocicletas","c":"Moto Servicios de San Miguel","u":"https://www.youtube.com/watch?v=37-dS6NXv9M","l":"es"}],"electrico-regulador":[{"t":"🏍️🔧 ¡Cómo medir el Regulador de Voltaje Trifásico de Moto Fácilmente, con el multímetro o tester! 📏⚡","c":"Motonel Uy","u":"https://www.youtube.com/watch?v=tkLXCi_wEgM","l":"es"},{"t":"COMO SABER SI MI REGULADOR DE VOLTAJE ESTA DAÑADO O NO ? PRUEBAS CON MULTÍMETRO 🔧","c":"Top riders speed","u":"https://www.youtube.com/watch?v=00hwE5bKPys","l":"es"},{"t":"Estas son las (INCREIBLES FALLAS)del REGULADOR de las MOTOS","c":"ACMÉCANICA motos TV","u":"https://www.youtube.com/watch?v=CTHWT1dCXjE","l":"es"}],"electrico-chanchito":[{"t":"Solución fácil si falla el relé de arranque de tu motocicleta","c":"EDDLA","u":"https://www.youtube.com/watch?v=_VgEP04m5r8","l":"es"},{"t":"SOLENOIDE DE ARRANQUE como REVISARLO PARA VER SI SIRVE (facilemete)","c":"ACMÉCANICA motos TV","u":"https://www.youtube.com/watch?v=98SpOpBfdz0","l":"es"},{"t":"COMO FUNCIONA EL SISTEMA DE ARRANQUE DE UNA MOTO 125,150,200,250 CC 🧑‍🔧 MIRA EL FUNCIONAMIENTO ⚡","c":"Top riders speed","u":"https://www.youtube.com/watch?v=sCtLPdAeaFA","l":"es"}],"electrico-ramal":[{"t":"COMO APRENDER EL SISTEMA ELÉCTRICO DE MI MOTO 125,150,200,250 (PARTE 1) BÁSICO","c":"Top riders speed","u":"https://www.youtube.com/watch?v=nn4EjGgtULs","l":"es"},{"t":"Sistema Eléctrico de Motos(COMPONENTES Y CONEXIONES)","c":"NEXUS ECUABIKER","u":"https://www.youtube.com/watch?v=2z4JY1Ibhw4","l":"es"}],"electrico-estator":[{"t":"COMO PROBAR SI MI ALTERNADOR O ESTATOR FUNCIONA O NO ? PRUEBAS CON MULTÍMETRO PARÁMETROS CORRECTOS 🔧","c":"Top riders speed","u":"https://www.youtube.com/watch?v=3SJDO20Jojs","l":"es"},{"t":"Fallas  de un ESTATOR de MOTO en mal estado","c":"ACMÉCANICA motos TV","u":"https://www.youtube.com/watch?v=zDbmQh8Uv0I","l":"es"},{"t":"Pruebas que se le reaizan al estator PRÁCTICA","c":"Profesor Odilon Ramirez","u":"https://www.youtube.com/watch?v=DQHuOu1Fn6g","l":"es"}],"luces-diagramas":[{"t":"Luz alta y baja de moto | instalación / color de cable","c":"Electromecánica Mi Pasión","u":"https://www.youtube.com/watch?v=zFRC3sUz1Ws","l":"es"},{"t":"Diagrama eléctrico de la luz posterior de la moto.","c":"Electromecánica Mi Pasión","u":"https://www.youtube.com/watch?v=cH_y5zS2gjY","l":"es"}],"mandos":[{"t":"MANDOS VINTAGE | ASÍ REPARÉ EL CLAXON |CUSTOMIZANDO LA ROCKETMAN | AFINANDO DETALLES PARA EL #DGR","c":"Danny Rocker🍒","u":"https://www.youtube.com/watch?v=_fUv94qqLk4","l":"es"},{"t":"Reparacion de switch de encendido moto","c":"Nacido para Rodar Tampico","u":"https://www.youtube.com/watch?v=kFdR1GSFgug","l":"es"}],"alarmas-gps":[{"t":"Cómo instalar una alarma  de moto ( diagrama para instalación )","c":"MEXICAN BIKERS AND FIGHTERS","u":"https://www.youtube.com/watch?v=8leEEGCwXeA","l":"es"},{"t":"Como instalar un Gps para Moto lineal","c":"Frases y chistes","u":"https://www.youtube.com/watch?v=7_KoQyy0mLs","l":"es"},{"t":"Como conectar el botón corta corriente de una moto","c":"Motostul1 Ochoa Carrillo","u":"https://www.youtube.com/watch?v=zVCEOQZVmDI","l":"es"}],"scooter-cvt":[{"t":"Cambio de rodillos Gilera Nexus 500 //Gas horse","c":"GaS HoRsE - electromecánica de motos","u":"https://www.youtube.com/watch?v=XBiBjXAk9nQ","l":"es"},{"t":"Aprilia SR MAX / Vespa GTS 300 - CVT service","c":"onelegKH","u":"https://www.youtube.com/watch?v=Bjkjk9Kq0XE","l":"en"},{"t":"MODIFICA la SCOOTER + velocidad + Potencia. RODILLOS del VARIADOR","c":"SupereFix","u":"https://www.youtube.com/watch?v=s8U9VS9KHP4","l":"es"}],"scooter-variador":[{"t":"♛ Así es el funcionamiento de un SCOOTER.♛ Maravilloso","c":"MPH Motos","u":"https://www.youtube.com/watch?v=xiba865xWpw","l":"es"},{"t":"Limpiar y Engrasar VARIADOR | Rodillos y Guías | C650 Tmax AK550 Sym MaxSym TL 500 508","c":"SkolgeaR","u":"https://www.youtube.com/watch?v=lNGIf6VXbwo","l":"es"},{"t":"MODIFICA la SCOOTER + velocidad + Potencia. RODILLOS del VARIADOR","c":"SupereFix","u":"https://www.youtube.com/watch?v=s8U9VS9KHP4","l":"es"}],"embrague-discos":[{"t":"Como SABER Si DEBO CAMBIAR los DISCOS del EMBRAGUE..","c":"MOTOR VIAJERO","u":"https://www.youtube.com/watch?v=D3DqP-RMpic","l":"es"},{"t":"DISCOS DE CLUTCH❗ como saber si están DAÑADOS y Cuando HAY que  Reemplazarlos♻️","c":"Hijo de pulsar TALLER DM","u":"https://www.youtube.com/watch?v=xZJsUuNUOno","l":"es"},{"t":"Como cambiar el embrague de una moto 125cc 150cc 200cc y que herramientas  necesitas","c":"MEXICAN BIKERS AND FIGHTERS","u":"https://www.youtube.com/watch?v=BpuOJDAzxh4","l":"es"}],"guayas":[{"t":"Como Lubricar Las Guayas De La Motocicleta - Hazlo Tu Mismo","c":"NickRider","u":"https://www.youtube.com/watch?v=r6VAKTDIggY","l":"es"},{"t":"Lubricar cable de embrague y acelerador en la moto: barato y rápido! 🤗","c":"Callejero Motovlog","u":"https://www.youtube.com/watch?v=Y-59B-oxsfA","l":"es"},{"t":"Cambiar cable de acelerador moto","c":"Moto1Pro y EnduroPro","u":"https://www.youtube.com/watch?v=v6myJJ4tSEA","l":"es"}],"cluster":[{"t":"Como Reparar Flotante Gasolina | Por esta Razón Mide mal El Nivel de Combustible✅","c":"Chica Mecanica","u":"https://www.youtube.com/watch?v=ffk4sjgmNdo","l":"es"},{"t":"el velocímetro no funciona.como  reparar el sistema","c":"Moncos te enseña","u":"https://www.youtube.com/watch?v=lxPgqE3XkgA","l":"es"},{"t":"Cómo Programar Velocímetro Digital universal adaptable a cualquier marca de motocicleta.","c":"El garaje de José Manuel H","u":"https://www.youtube.com/watch?v=BsPw29KR_M0","l":"es"}],"racing":[{"t":"Los CDI RACING para Moto","c":"MRM repuestos","u":"https://www.youtube.com/watch?v=_kMXmyHxvkA","l":"es"},{"t":"carburador .carburacion moto 125cc.150cc.200cc tips y datos","c":"Mau Cobra","u":"https://www.youtube.com/watch?v=RcwLQH-GdKo","l":"es"},{"t":"COMO CARBURAR UNA MOTO ✅ (carburación de competicion 🚦🧿","c":"chiozzone motos preparaciones","u":"https://www.youtube.com/watch?v=70-YDvke9UI","l":"es"}],"frenos-avanzado":[{"t":"COMO REPARAR LA BOMBA DE FRENO DE CUALQUIER MOTO (FACIL Y RÁPIDO) CAMBIO DE PIEZAS INTERNAS 🔧","c":"Top riders speed","u":"https://www.youtube.com/watch?v=vlTDwm70Sjw","l":"es"},{"t":"Como Reparar Bomba de freno trasero de moto","c":"Augusto mayer","u":"https://www.youtube.com/watch?v=WosYD5hwsDA","l":"es"},{"t":"¿caliper atascado? asi se sacan los pistones 😎","c":"CYM Motors","u":"https://www.youtube.com/watch?v=1-FC9v6JhCE","l":"es"}],"efi":[{"t":"Diagnostico de la Inyección Electrónica en Motos","c":"Mecánica De La Moto","u":"https://www.youtube.com/watch?v=3o33OFTISZE","l":"es"},{"t":"¿Cómo funciona el sistema FI (Fuel injection) de tu moto Pulsar?","c":"bajaj colombia","u":"https://www.youtube.com/watch?v=iOK2uA34qxo","l":"es"},{"t":"KTM DUKE 200 solución del problema de bomba o pila de combustible. #clubktmbogota","c":"THAI.GARAGE MOTORCYCLES","u":"https://www.youtube.com/watch?v=Wd4a-23DkBM","l":"es"}],"valvulas":[{"t":"Cómo calibrar las válvulas de tu moto","c":"AKT Motos","u":"https://www.youtube.com/watch?v=S2N-ZWXxT-U","l":"es"},{"t":"Como Calibrar Las Punterías De Una Moto (En menos de 4 minutos)","c":"ASI SE HACE","u":"https://www.youtube.com/watch?v=KDzKuXLeAfM","l":"es"},{"t":"como regular valvulas en una moto 250, con o sin galgas","c":"Augusto mayer","u":"https://www.youtube.com/watch?v=WI20qTfqng4","l":"es"}],"arranque-motor":[{"t":"KTM no arranca","c":"Reparomimoto","u":"https://www.youtube.com/watch?v=jm77kJi_ASA","l":"es"},{"t":"Problemas Electricos (4/10)El motor de arranque sigue funcionando a pesar de que ya solte el boton .","c":"NEXUS ECUABIKER","u":"https://www.youtube.com/watch?v=1ZhuhLE6z34","l":"es"},{"t":"NINGÚN MECÁNICO te DIRÁ estos TRUCOS sobre el ARRANQUE","c":"Mecánica de Paulo","u":"https://www.youtube.com/watch?v=pPhlmZy-MSQ","l":"es"}],"chasis-direccion":[{"t":"Cómo cambiar Juego de dirección completo en motocicletas 110? (Gilera, Zanella, etc) Parte 2/2","c":"Esteban Pablo Gutierrez","u":"https://www.youtube.com/watch?v=3HpV52iZt7o","l":"es"},{"t":"Rodamientos en Mal estado , como Revisarlos.","c":"Energy Motos","u":"https://www.youtube.com/watch?v=qMG_EKpCt6g","l":"es"},{"t":"Cómo alinear la dirección de tu moto en 5 minutos (sin taller, sin herramientas especiales)","c":"Vengoviajando | Aventuras en moto","u":"https://www.youtube.com/watch?v=02xQAvZwGuU","l":"es"}],"escape":[{"t":"Full System o Slip-On ¿Qué escape te conviene? y Cuál elegí YO","c":"JohnRides","u":"https://www.youtube.com/watch?v=jtMZsdSgsr0","l":"es"},{"t":"Como silenciar el escape de tu moto de forma CASERA Y ECONÓMICA","c":"Andrés Cornish","u":"https://www.youtube.com/watch?v=fnutXCUaGjw","l":"es"},{"t":"How to install the Akrapovic Carbon Slip-On Exhaust for a BMW F900R!","c":"KBar_Moto","u":"https://www.youtube.com/watch?v=5T2H-jjQXEU","l":"en"}],"caja-cambios":[{"t":"Como ARMAR la caja de cambios de moto  cg 125 150cc 200 250","c":"Mototaller AP Motos","u":"https://www.youtube.com/watch?v=yuSGOm79D4Y","l":"es"},{"t":"cómo ARMAR y  Desarmar CAJA de CAMBIOS de moto ACTIVE 110  paso a paso\"","c":"Rey Motocicletas","u":"https://www.youtube.com/watch?v=ZIY3sGblWXc","l":"es"},{"t":"Blog # 33  - Perno del selector de cambios","c":"Mecánica De La Moto","u":"https://www.youtube.com/watch?v=TfHKhOsq3Q8","l":"es"}],"carburador-avanzado":[{"t":"CARBURAR la MOTO, CHICLERES DE BAJA y ALTA, tornillo de aire y CUANTAS VUELTAS son ! 200cc 150cc","c":"Nahuel Karim","u":"https://www.youtube.com/watch?v=RRn9xvHy-h8","l":"es"},{"t":"Como CARBURAR TU MOTO  regulación tornillo de aire /mezcla /afinar carburador al detalle","c":"Mototaller AP Motos","u":"https://www.youtube.com/watch?v=V56xIF2UsVw","l":"es"},{"t":"COMO COLOCAR LA AGUJA DEL CARBURADOR CORRECTAMENTE","c":"Adrilaba","u":"https://www.youtube.com/watch?v=N-iVDL_GGWg","l":"es"}],"encendido-avanzado":[{"t":"1196 | COMO PROBAR BOBINA CAPTORA CON MULTIMETRO","c":"Piston Bikers","u":"https://www.youtube.com/watch?v=loD0JKmqSNA","l":"es"},{"t":"Bobina Captora, Pulzos, Funcionamiento y Fallas","c":"Compartir Sabiduría.","u":"https://www.youtube.com/watch?v=dJu7vDP_YpE","l":"es"},{"t":"Fallas  de un ESTATOR de MOTO en mal estado","c":"ACMÉCANICA motos TV","u":"https://www.youtube.com/watch?v=zDbmQh8Uv0I","l":"es"}],"carga-flujo":[{"t":"¿Cómo Funciona El Sistema de Carga de Una Moto ? | Bateria - Corona -Regulador","c":"Energy Motos","u":"https://www.youtube.com/watch?v=EbKWIkvrPuM","l":"es"},{"t":"Pruebas de un regulador y corona de Kawasaki Er 6N o Versys 650","c":"Rebobimotos Canal Oficial","u":"https://www.youtube.com/watch?v=jM1sDkF8F5w","l":"es"},{"t":"Comprobación sistema de carga BMW R45","c":"Donkey Motorbikes","u":"https://www.youtube.com/watch?v=bg26ovsBmUs","l":"es"}],"suspension-trasera":[{"t":"Como y Porque Ajustar la Suspensión de una Moto | Respondemos sus preguntas | Energy Motos","c":"Energy Motos","u":"https://www.youtube.com/watch?v=d9_GuDJQhAI","l":"es"},{"t":"Como Cambiar los amortiguadores de mi MOTO? | Para Principiantes y Herramienta basica","c":"ET Rider","u":"https://www.youtube.com/watch?v=wEdIfiixaFU","l":"es"}],"refrigeracion-electro":[{"t":"falla en sistema de refrigeración de KTM 390","c":"mega motors  cajamarca","u":"https://www.youtube.com/watch?v=a9LvlPDCZOs","l":"es"},{"t":"🏍️Circuito de Refrigeración HONDA SHADOW VT750C, comprobar componentes y solucionar problemas🏍️","c":"electromecanica_facil","u":"https://www.youtube.com/watch?v=o3sQDOH2v_g","l":"es"}],"mantenimiento-programa":[{"t":"SERVICIO COMPLETO de tu MOTO en 10 pasos.","c":"SupereFix","u":"https://www.youtube.com/watch?v=ZbN5bsNQBGk","l":"es"},{"t":"Mantenimiento en casa para principiantes: 5 pasos básicos en tu moto de enduro","c":"Moto1Pro y EnduroPro","u":"https://www.youtube.com/watch?v=ozzp0mvDOw8","l":"es"},{"t":"IMPORTANTE: Los mantenimiento Honda","c":"Honda Motos Perú Oficial","u":"https://www.youtube.com/watch?v=KnWdIkrN5Ds","l":"es"}]};
 </script>
 <script>
 
 "use strict";
-var WA_URL = "https://wa.me/584143956441?text=" + encodeURIComponent("Hola, quiero activar la licencia PRO de MotosPro Master PRO ($9.99 USD).");
+var MP_SECRET = "33fd610e2a94c5aa84e9f8f4";
+var MP_ALPHA = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
+function mpHash(str, seed){
+  var h1 = 0xdeadbeef ^ (seed || 0), h2 = 0x41c6ce57 ^ (seed || 0);
+  for (var i = 0; i < str.length; i++) {
+    var ch = str.charCodeAt(i);
+    h1 = Math.imul(h1 ^ ch, 2654435761);
+    h2 = Math.imul(h2 ^ ch, 1597334677);
+  }
+  h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+  h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+  return (h2 >>> 0) * 4294967296 + (h1 >>> 0);
+}
+function mpRandCode(){
+  var out = "", i;
+  try {
+    if (window.crypto && crypto.getRandomValues) {
+      var a = new Uint8Array(6); crypto.getRandomValues(a);
+      for (i = 0; i < 6; i++) out += MP_ALPHA[a[i] % 32];
+    } else { throw 0; }
+  } catch (e) {
+    for (i = 0; i < 6; i++) out += MP_ALPHA[Math.floor(Math.random() * 32)];
+  }
+  return out.slice(0, 3) + "-" + out.slice(3);
+}
+var MP_DEVICE = "";
+try {
+  MP_DEVICE = localStorage.getItem("mpp_device") || "";
+  if (!MP_DEVICE) { MP_DEVICE = mpRandCode(); localStorage.setItem("mpp_device", MP_DEVICE); }
+} catch (e) { MP_DEVICE = mpRandCode(); }
+function mpKeyFor(code){
+  var h = mpHash(MP_SECRET + "|" + code), out = "", x = h;
+  for (var i = 0; i < 7; i++) { out += MP_ALPHA[x % 32]; x = Math.floor(x / 32); }
+  return "P-" + out;
+}
+function mpNormKey(k){ return (k || "").toUpperCase().replace(/[^A-Z0-9]/g, ""); }
+function mpValidKey(k){
+  var n = mpNormKey(k), want = mpNormKey(mpKeyFor(MP_DEVICE));
+  return n === want || n === want.slice(1);
+}
+var WA_URL = "https://wa.me/584143956441?text=" + encodeURIComponent("Hola, quiero activar MotosPro Master PRO ($9.99, pago único). Mi código es " + MP_DEVICE + ".");
 var unlocked = false;
 try{ unlocked = localStorage.getItem("mpp_pro") === "1"; }catch(e){}
 
@@ -359,14 +408,29 @@ function renderChips(active){
   });
 }
 
+function escHtml(s){
+  return (s || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+function videosHTML(g, open){
+  if(!open) return "";
+  var list = VIDEOS[g.id];
+  if(!list || !list.length) return "";
+  var items = list.map(function(v){
+    var lang = v.l === "en" ? " · en inglés" : "";
+    return '<li><a href="' + escHtml(v.u) + '" target="_blank" rel="noopener">▶ ' + escHtml(v.t) + '</a> <span class="ch">' + escHtml(v.c) + lang + "</span></li>";
+  }).join("");
+  return '<div class="videos"><b>📺 Videos de este tema</b><ul>' + items + '</ul><p class="vhint">Videos de YouTube de otros canales, como apoyo visual. Si uno no abre, quedan los demás de la lista.</p></div>';
+}
+
 function guideHTML(g){
   var open = isOpen(g);
   var tag = g.p === 0 ? '<span class="tag tag-free">Gratis</span>'
     : (open ? '<span class="tag tag-pro">PRO</span>' : '<span class="tag tag-lock">PRO · Bloqueado</span>');
   var body = open ? '<div class="body">' + g.b + "</div>"
     : '<div class="locknote">🔒 Módulo PRO. Un solo pago de $9.99 abre <b>todos</b> los módulos PRO, no uno por uno. <a href="#buySection" onclick="document.getElementById(\'buySection\').scrollIntoView({behavior:\'smooth\'});return false;">Ver cómo activar</a>.</div>';
+  var vids = videosHTML(g, open);
   return '<article class="guide' + (g.p === 1 ? " pro" : "") + (open ? "" : " locked") + '" id="g-' + g.id + '">'
-    + "<h4>" + g.t + tag + "</h4>" + body + "</article>";
+    + "<h4>" + g.t + tag + "</h4>" + body + vids + "</article>";
 }
 
 function renderGuides(filter){
@@ -387,22 +451,23 @@ function applyProState(){
     $("proHeroTitle").textContent = "✅ PRO activo: todo desbloqueado";
     $("proHeroText").textContent = "Pagaste una sola vez y todos los módulos PRO están abiertos en esta página, en este teléfono.";
     $("proHeroBody").style.display = "none";
+    $("keyBox").style.display = "none";
     $("proActiveNote").classList.add("show");
   }
 }
 
 function tryUnlock(){
-  var v = $("keyInput").value.trim().toUpperCase();
-  if(v === PRO_WORD){
+  var v = $("keyInput").value;
+  if(mpValidKey(v)){
     unlocked = true;
     try{ localStorage.setItem("mpp_pro", "1"); }catch(e){}
-    $("keyMsg").textContent = "¡Felicidades! Módulos PRO desbloqueados con éxito.";
+    $("keyMsg").textContent = "¡Felicidades! Módulos PRO desbloqueados con éxito. PRO activo para siempre en este teléfono.";
     $("keyMsg").style.color = "#14532d";
     applyProState();
     renderGuides("__all__");
     renderChips("__all__");
   } else {
-    $("keyMsg").textContent = "Esa palabra no coincide. Revisa mayúsculas y espacios, o pide tu palabra por WhatsApp.";
+    $("keyMsg").textContent = "Esa clave no coincide con este teléfono. Revisa mayúsculas y espacios, o pide tu clave por WhatsApp.";
     $("keyMsg").style.color = "#8a1f0d";
   }
 }
@@ -480,7 +545,7 @@ function setupVoice(){
 
 /* ---------- calculadoras ---------- */
 function voltDiagnosis(v){
-  if(isNaN(v)) return {cls:"", txt:""};
+  if(isNaN(v)) return {cls:"warn2", txt:"✍️ Escribe primero el voltaje que mediste (a 3000 RPM, en los bornes) y toca de nuevo «Diagnosticar carga»."};
   if(v < 12.4) return {cls:"bad", txt:"🔴 <b>Batería baja o sin carga (" + v.toFixed(1) + " V).</b> Carga la batería con cargador lento y vuelve a medir. Si no retiene la carga, la batería está al final de su vida. Revisa bornes y fusible principal."};
   if(v < 13.5) return {cls:"warn2", txt:"🟡 <b>Carga baja (" + v.toFixed(1) + " V).</b> El sistema carga poco. Revisa en orden: bornes y masa, conectores del estator y salida del regulador."};
   if(v <= 14.8) return {cls:"ok", txt:"🟢 <b>Carga óptima (" + v.toFixed(1) + " V).</b> Alternador/regulador funcionando bien. Si la moto igual falla, el problema está en otro lado (batería, arranque o encendido)."};
@@ -497,7 +562,7 @@ function ohmDiagnosis(p, s, pk){
   band(p, 0.2, 5, "Primaria", "Ω");
   band(s, 5, 20, "Secundaria", "kΩ");
   band(pk, 100, 500, "Captora / pickup", "Ω");
-  if(!lines.length) return {cls:"", txt:""};
+  if(!lines.length) return {cls:"warn2", txt:"✍️ Escribe primero al menos una medida (primaria, secundaria o captora) y toca de nuevo «Evaluar bobinas»."};
   var extra = "<br>Una lectura OL (infinito) significa bobina abierta: no hay continuidad. Mide siempre con el componente desconectado y compara con el manual de tu modelo.";
   return {cls:"ok", txt:lines.join("<br>") + extra};
 }
@@ -505,6 +570,7 @@ function ohmDiagnosis(p, s, pk){
 /* ---------- inicio ---------- */
 $("waTop").href = WA_URL;
 $("waBottom").href = WA_URL;
+$("deviceCode").textContent = MP_DEVICE;
 applyProState();
 renderGuides("__all__");
 renderChips("__all__");
